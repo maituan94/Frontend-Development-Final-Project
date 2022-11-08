@@ -1,14 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, useState, useEffect, useRef } from "react"
 import { useForm, Controller } from "react-hook-form";
-
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
 const Signup = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const defaultSignupValue = {
+        isSupplier: false,
         firstName: "",
         lastName: "",
+        companyName: "",
         email: "",
         phone: "",
         password: "",
@@ -16,6 +18,15 @@ const Signup = ({ className }) => {
     }
 
     const signUpElements = [
+        {
+            name: "isSupplier",
+            rules: {},
+            type: "toggle",
+            label: {
+                "false": "Sign up as a customer",
+                "true": "Sign up as a supplier"
+            }
+        },
         {
             name: "firstName",
             rules: {
@@ -33,6 +44,12 @@ const Signup = ({ className }) => {
             },
             type: "text",
             placeholder: "Last Name"
+        },
+        {
+            name: "companyName",
+            rules: {},
+            type: "text",
+            placeholder: "Company Name"
         },
         {
             name: "email",
@@ -76,15 +93,19 @@ const Signup = ({ className }) => {
     ]
 
     const { handleSubmit, reset, setValue, control, formState: { errors }, watch } = useForm({ mode: "all", defaultValues: defaultSignupValue });
-    const [data, setData] = useState(null);
-    const passwordRef = useRef({});
-    passwordRef.current = watch("password", "");
+    const [data, setData] = useState(defaultSignupValue);
 
-    function closeModal() {
+    const passwordRef = useRef({})
+    passwordRef.current = watch("password", "")
+
+    const isSupplierRef = useRef({})
+    isSupplierRef.current = watch("isSupplier", false)
+
+    const closeModal = () => {
         setIsOpen(false)
     }
 
-    function openModal() {
+    const openModal = (e) => {
         setIsOpen(true)
     }
 
@@ -94,6 +115,42 @@ const Signup = ({ className }) => {
         }
     }, [isOpen, reset])
 
+    const onSubmit = (data) => {
+        console.log(data)
+    }
+
+    const renderSimpleInput = (data, index) => <Controller
+        key={`${data.name}-${index}`}
+        name={data.name}
+        control={control}
+        rules={data.rules}
+        render={({ field }) => (
+            <div className="bg-white px-4 mb-6">
+                <input
+                    type={data.type}
+                    {...field}
+                    className={`${field.name === "companyName" && isSupplierRef.current === false && "hidden"} mb-1 w-full p-3 border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm`}
+                    placeholder={data.placeholder} />
+                <small className="text-red-500 d-flex flex-column">{errors[data.name]?.message || ''}</small>
+            </div>
+        )}
+    />
+
+    const renderToggle = (data, index) =>
+        <Controller
+            key={`${data.name}-${index}`}
+            name={data.name}
+            control={control}
+            rules={data.rules}
+            render={({ field }) => (
+                <div className="bg-white px-4 mb-6">
+                    <label className="inline-flex relative items-center cursor-pointer">
+                        <input type="checkbox" {...field} checked={field.value} className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600"></div>
+                        <span className="ml-3 text-sm font-medium text-gray-700">{data.label[field.value.toString()]}</span>
+                    </label>
+                </div>
+            )} />
 
     return (
         <>
@@ -114,6 +171,7 @@ const Signup = ({ className }) => {
                         leave="ease-in duration-200"
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
+
                     >
                         <div className="fixed inset-0 bg-black bg-opacity-25" />
                     </Transition.Child>
@@ -132,35 +190,21 @@ const Signup = ({ className }) => {
                                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
-                                        className="text-lg font-medium leading-6 text-gray-900"
-                                    >
-                                        Signup
+                                        className="text-lg font-medium leading-6 text-gray-900 mb-5">
+                                        Sign up
+                                        <XMarkIcon className="absolute top-3 right-3 h-6 w-6" aria-hidden="true" onClick={() => closeModal()}/>
                                     </Dialog.Title>
                                     <div className="mt-2">
-                                        <form onSubmit={handleSubmit((data) => setData(data))} className="form">
-                                            {signUpElements.map((ele, index) =>
-                                                <Controller
-                                                    key={`${ele.name}-${index}`}
-                                                    name={ele.name}
-                                                    control={control}
-                                                    rules={ele.rules}
-                                                    render={({ field }) => (
-                                                        <div className="bg-white px-4 mb-6">
-                                                            <input
-                                                                type={ele.type}
-                                                                {...field}
-                                                                className="mb-1 w-full p-3 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                                placeholder={ele.placeholder} />
-                                                            <small className="text-red-500 d-flex flex-column">{errors[ele.name]?.message || ''}</small>
-                                                        </div>
-                                                    )}
-                                                />
-                                            )}
+                                        <form onSubmit={handleSubmit((data) => onSubmit(data))} className="form">
+                                            {signUpElements.map((ele, index) => {
+                                                if (ele.type === "toggle") return renderToggle(ele, index)
+                                                return renderSimpleInput(ele, index)
+                                            })}
                                             <div className="mt-4">
                                                 <button
                                                     type="submit"
-                                                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                                                    Submit
+                                                    className="inline-flex justify-center rounded-md border border-transparent bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2">
+                                                    Register
                                                 </button>
                                             </div>
                                         </form>

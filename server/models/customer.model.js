@@ -60,7 +60,7 @@ const customerSchema = mongoose.Schema({
         type: String,
         validate: {
             validator: function (v) {
-                return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{12,}$/.test(v)
+                return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(v)
             },
             message: () => `Password is not valid!`
         },

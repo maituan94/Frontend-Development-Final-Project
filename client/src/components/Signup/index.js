@@ -73,7 +73,7 @@ const Signup = ({ className }) => {
             name: "password",
             rules: {
                 required: { value: true, message: "Password is empty" },
-                pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{12,}$/, message: "Password must be at least 12 mix-characters of uppercase letter, number and special character" }
+                pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, message: "Password must be at least 12 mix-characters of uppercase letter, number and special character" }
             },
             type: "password",
             placeholder: "Password"
@@ -82,7 +82,7 @@ const Signup = ({ className }) => {
             name: "passwordConfirm",
             rules: {
                 required: { value: true, message: "Confirm Password is empty" },
-                pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{12,}$/, message: "Confirm Password must be at least 12 mix-characters of uppercase letter, number and special character" },
+                pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, message: "Confirm Password must be at least 12 mix-characters of uppercase letter, number and special character" },
                 validate: value => {
                     return value === passwordRef?.current || "The passwords do not match"
                 }
@@ -124,16 +124,23 @@ const Signup = ({ className }) => {
         name={data.name}
         control={control}
         rules={data.rules}
-        render={({ field }) => (
-            <div className="bg-white px-4 mb-6">
-                <input
-                    type={data.type}
-                    {...field}
-                    className={`${field.name === "companyName" && isSupplierRef.current === false && "hidden"} mb-1 w-full p-3 border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm`}
-                    placeholder={data.placeholder} />
-                <small className="text-red-500 d-flex flex-column">{errors[data.name]?.message || ''}</small>
-            </div>
-        )}
+        render={({ field }) => {
+            let className = "mb-1 w-full p-3 border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+        
+            if (isSupplierRef.current === false) {
+                className += field.name === "companyName" ? " hidden": ""
+            }else {
+                className += (field.name === "firstName" || field.name === "lastName") ? " hidden": ""
+            }
+                return <div className="bg-white px-4 mb-6">
+                    <input
+                        type={data.type}
+                        {...field}
+                        className={className}
+                        placeholder={data.placeholder} />
+                    <small className="text-red-500 d-flex flex-column">{errors[data.name]?.message || ''}</small>
+                </div>
+        }}
     />
 
     const renderToggle = (data, index) =>

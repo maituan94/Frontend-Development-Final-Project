@@ -98,7 +98,7 @@ const createCustomer = (req, res) => {
         console.log(data)
         const secret = process.env.SECRET_JWT_TOKEN
         const expiresIn = process.env.TOKEN_EXPIRED_TIME
-        let token = jwt.sign({ data: `${data._id}-${data.email}` }, secret, {
+        let token = jwt.sign({ data: userJsonReponse(data) }, secret, {
             expiresIn
         })
         res.status(statusCode.success).json({
@@ -208,7 +208,7 @@ const login = (req, res) => {
         }
         const secret = process.env.SECRET_JWT_TOKEN
         const expiresIn = process.env.TOKEN_EXPIRED_TIME
-        let token = jwt.sign({ data: `${data._id}-${data.email}` }, secret, {
+        let token = jwt.sign({ data: userJsonReponse(data) }, secret, {
             expiresIn
         })
         res.status(statusCode.success).json({

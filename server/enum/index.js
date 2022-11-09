@@ -26,7 +26,8 @@ export const statusCode = {
     unauthorized: 401,
     internalServerError: 500,
     badRequest: 400,
-    notFound: 404
+    notFound: 404,
+    forbidden: 403
 }
 
 //duplication error code

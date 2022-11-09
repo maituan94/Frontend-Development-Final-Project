@@ -20,7 +20,8 @@ export const userJsonReponse = (data) => {
         state: data.state,
         isSendNews: data.isSendNews,
         question: data.question,
-        dateOfBirth: data.dateOfBirth
+        dateOfBirth: data.dateOfBirth,
+        isSupplier: data.companyName ? true : false
     }
 }
 

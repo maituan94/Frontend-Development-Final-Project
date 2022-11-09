@@ -26,7 +26,7 @@ const Signin = ({ className }) => {
             name: "password",
             rules: {
                 required: { value: true, message: "Password is empty" },
-                pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{12,}$/, message: "Password must be at least 12 mix-characters of uppercase letter, number and special character" }
+                pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, message: "Password must be at least 12 mix-characters of uppercase letter, number and special character" }
             },
             type: "password",
             placeholder: "Password"

@@ -4,13 +4,16 @@ import { useSelector } from 'react-redux'
 import './_global.scss'
 import { Header, Footer } from './layout'
 
-export default function App() {
+const App = () => {
   return (
     <Router>
       <Header />
       <Routes>
+        {/* Add Route here */}
       </Routes>
       <Footer />
     </Router>
   )
 }
+
+export default App;

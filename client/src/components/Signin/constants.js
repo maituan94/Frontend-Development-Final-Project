@@ -1,10 +1,19 @@
 export const defaultSigninValue = {
+  isSupplier: false,
   email: '',
   password: '',
 }
 
 export const signInElements = [
-
+  {
+    name: 'isSupplier',
+    rules: {},
+    type: 'toggle',
+    label: {
+      'false': 'Login as a customer',
+      'true': 'Login as a supplier'
+    }
+  },
   {
     name: 'email',
     rules: {

@@ -65,7 +65,7 @@ export const signUpElements = (passwordRef) => [
     name: "password",
     rules: {
       required: { value: true, message: "Password is empty" },
-      pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, message: "Password must be at least 12 mix-characters of uppercase letter, number and special character" }
+      pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, message: "Password must be at least 8 mix-characters of uppercase letter, number and special character" }
     },
     type: "password",
     placeholder: "Password"
@@ -74,7 +74,7 @@ export const signUpElements = (passwordRef) => [
     name: "passwordConfirm",
     rules: {
       required: { value: true, message: "Confirm Password is empty" },
-      pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, message: "Confirm Password must be at least 12 mix-characters of uppercase letter, number and special character" },
+      pattern: { value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, message: "Confirm Password must be at least 8 mix-characters of uppercase letter, number and special character" },
       validate: value => {
         return value === passwordRef?.current || "The passwords do not match"
       }

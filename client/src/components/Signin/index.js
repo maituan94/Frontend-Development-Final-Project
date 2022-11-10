@@ -1,9 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
+import { renderSimpleInput, renderToggle } from '../../utils'
 import { defaultSigninValue, signInElements } from './constants'
+
 
 const Signin = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -63,24 +65,10 @@ const Signin = ({ className }) => {
                   </Dialog.Title>
                   <div className='mt-2'>
                     <form onSubmit={handleSubmit((data) => setData(data))} className='form'>
-                      {signInElements.map((ele, index) =>
-                        <Controller
-                          key={`${ele.name}-${index}`}
-                          name={ele.name}
-                          control={control}
-                          rules={ele.rules}
-                          render={({ field }) => (
-                            <div className='bg-white px-4 mb-6'>
-                              <input
-                                type={ele.type}
-                                {...field}
-                                className='mb-1 w-full p-3 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                                placeholder={ele.placeholder} />
-                              <small className='text-red-500 d-flex flex-column'>{errors[ele.name]?.message || ''}</small>
-                            </div>
-                          )}
-                        />
-                      )}
+                      {signInElements.map((ele, index) =>{
+                        if (ele.type === 'toggle') return renderToggle(ele, control, index)
+                        return renderSimpleInput(ele, control, errors, index)
+                      })}
                       <div className='mt-4'>
                         <button
                           type='submit'

@@ -1,18 +1,40 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-
 import {
     getAllCustomers,
     getCustomerById,
-    createCustomer as createNewCustomer,
-    updateCustomer as updateCustomerById,
+    createCustomer,
+    updateCustomer,
     deleteCustomer as deleteCustomerById,
     findOneCustomer
-} from "../models/customer.model.js"
+} from '../models/customer.model.js'
+import {
+    getAllSuppliers,
+    getSupplierById,
+    createSupplier,
+    updateSupplier,
+    deleteSupplier,
+    findOneSupplier
+} from '../models/supplier.model.js'
+
 import { userJsonReponse, userCreateUpdateJson } from '../helper/index.js'
 import { statusCode, duplicatedCode } from '../enum/index.js'
 
 dotenv.config()
+const userDict = {
+    getAllCustomers,
+    getCustomerById,
+    createCustomer,
+    updateCustomer,
+    deleteCustomerById,
+    findOneCustomer,
+    getAllSuppliers,
+    getSupplierById,
+    createSupplier,
+    updateSupplier,
+    deleteSupplier,
+    findOneSupplier
+}
 
 /**
  * It gets all the customers from the database and returns them in a JSON response
@@ -42,16 +64,19 @@ const getCustomers = (req, res) => {
  * @param req - The request object.
  * @param res - The response object.
  */
-const getCustomerByID = (req, res) => {
+const getUserById = (req, res) => {
     const id = req.params?.id
-    if (!id) {
+    if (!id || !req.user) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
             error: { message: 'Invalid User Id' }
         })
         return
     }
-    getCustomerById(id, (err, data) => {
+
+    const functionName = req.user.isSupplier ? 'getSupplierById' : 'getCustomerById'
+
+    userDict[functionName](id, (err, data) => {
         if (err) {
             console.log(err)
             res.status(statusCode.success).json({
@@ -73,21 +98,23 @@ const getCustomerByID = (req, res) => {
  * @param req - The request object.
  * @param res - The response object.
  */
-const createCustomer = (req, res) => {
-    const customer = req.body
-    if (!customer) {
+const createUser = (req, res) => {
+    const user = req.body
+    if (!user) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
-            error: { message: 'Invalid customer' }
+            error: { message: 'Invalid user' }
         })
         return
     }
 
-    createNewCustomer(userCreateUpdateJson(customer), (err, data) => {
+    const functionName = user.isSupplier ? 'createSupplier' : 'createCustomer'
+
+    userDict[functionName](userCreateUpdateJson(user), (err, data) => {
         if (err) {
             console.log(err)
             if (err.code === duplicatedCode) {
-                err = {...err, message: `${Object.keys(err.keyPattern)?.join(", ")} already existed`}
+                err = {...err, message: `${Object.keys(err.keyPattern)?.join(', ')} already existed`}
             }
             res.status(statusCode.success).json({
                 statusCode: statusCode.badRequest,
@@ -115,22 +142,25 @@ const createCustomer = (req, res) => {
  * @param req - The request object.
  * @param res - The response object.
  */
-const updateCustomer = (req, res) => {
+const updateUser = (req, res) => {
     const { id } = req.params
-    const customer = req.body
+    const user = req.body
 
-    if (!customer || !id) {
+    if (!user || !id || !req.user) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
-            error: { message: 'Invalid Customer' }
+            error: { message: 'Invalid user' }
         })
         return
     }
-    updateCustomerById(id, userCreateUpdateJson(customer), (err, data) => {
+
+    const functionName = req.user.isSupplier ? 'updateSupplier' : 'updateCustomer'
+
+    userDict[functionName](id, userCreateUpdateJson(user), (err, data) => {
         if (err) {
             console.log(err)
             if (err.code === duplicatedCode) {
-                err = {...err, message: `${Object.keys(err.keyPattern)?.join(", ")} already existed`}
+                err = {...err, message: `${Object.keys(err.keyPattern)?.join(', ')} already existed`}
             }
             res.status(statusCode.success).json({
                 statusCode: statusCode.internalServerError,
@@ -141,8 +171,8 @@ const updateCustomer = (req, res) => {
         console.log(data)
         res.status(statusCode.success).json({
             statusCode: statusCode.success,
-            message: 'Update customer successfully!',
-            data: userJsonReponse(customer) || {}
+            message: 'Update user successfully!',
+            data: userJsonReponse(user) || {}
         })
     })
 
@@ -188,9 +218,10 @@ const deleteCustomer = (req, res) => {
  * @param res - The response object.
  */
 const login = (req, res) => {
-    const { email, password } = req.body
+    const { email, password, isSupplier } = req.body
+    const functionName = isSupplier ? 'findOneSupplier' : 'findOneCustomer'
 
-    findOneCustomer({ email, password }, (err, data) => {
+    userDict[functionName]({ email, password }, (err, data) => {
         if (err) {
             console.log(err)
             res.status(statusCode.success).json({
@@ -222,9 +253,9 @@ const login = (req, res) => {
 
 export {
     getCustomers,
-    getCustomerByID,
-    createCustomer,
-    updateCustomer,
+    getUserById,
+    createUser,
+    updateUser,
     deleteCustomer,
     login
 }

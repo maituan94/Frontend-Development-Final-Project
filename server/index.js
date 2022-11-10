@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import dbConfig from './dbconfig.js'
 
-import CustomerRouter from './routes/customer.route.js'
+import UserRouter from './routes/user.route.js'
 import GeneralRouter from './routes/general.route.js'
 
 const app = express();
@@ -12,7 +12,7 @@ app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
-app.use('/api', CustomerRouter);
+app.use('/api', UserRouter);
 app.use('/api', GeneralRouter);
 
 /* This is creating a constant variable called CONNECTION_URL that is a string with the value of the

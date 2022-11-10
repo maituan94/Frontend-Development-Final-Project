@@ -1,5 +1,5 @@
 export const ENDPOINTS = {
-  USER: 'customer',
+  USER: 'user',
 }
 
 export const API_PATH = 'api'

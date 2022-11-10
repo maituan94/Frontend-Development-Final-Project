@@ -3,8 +3,10 @@ import { Fragment, useState, useEffect, useRef } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
+import { renderSimpleInput, renderToggle } from '../../utils'
 import { defaultSignupValue, signUpElements } from './constants'
 import { createUser } from '../../api/user'
+
 
 const Signup = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -38,47 +40,6 @@ const Signup = ({ className }) => {
       toggleModal()
     }
   }
-
-  const renderSimpleInput = (data, index) => <Controller
-    key={`${data.name}-${index}`}
-    name={data.name}
-    control={control}
-    rules={data.rules}
-    render={({ field }) => {
-
-      let className = 'mb-1 w-full p-3 border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm'
-
-      return <div className='bg-white px-4 mb-6'>
-        <input
-          type={data.type}
-          {...field}
-          className={className}
-          placeholder={data.placeholder} />
-        <small className='text-red-500 d-flex flex-column'>{errors[data.name]?.message || ''}</small>
-      </div>
-    }}
-  />
-
-  const renderToggle = (data, index) =>
-    <Controller
-      key={`${data.name}-${index}`}
-      name={data.name}
-      control={control}
-      rules={data.rules}
-      render={({ field }) => (
-        <div className='bg-white px-4 mb-6'>
-          <label className='inline-flex relative items-center cursor-pointer'>
-            <input
-              type='checkbox' {...field}
-              checked={field.value}
-              className='sr-only peer'
-            />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600"></div>
-            <span className='ml-3 text-sm font-medium text-gray-700'>{data.label[field.value.toString()]}</span>
-          </label>
-        </div>
-      )} />
-
   const elementsToRender = (passwordRef) => {
     if (isSupplierRef.current) {
       return signUpElements(passwordRef)
@@ -149,8 +110,8 @@ const Signup = ({ className }) => {
                       className='form'
                     >
                       {elementsToRender(passwordRef).map((ele, index) => {
-                        if (ele.type === 'toggle') return renderToggle(ele, index)
-                        return renderSimpleInput(ele, index)
+                        if (ele.type === 'toggle') return renderToggle(ele, control, index)
+                        return renderSimpleInput(ele, control, errors, index)
                       })}
                       <div className='mt-4'>
                         <button

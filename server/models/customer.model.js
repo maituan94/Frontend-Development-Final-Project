@@ -5,25 +5,27 @@ import { genders, provinces } from "../enum/index.js";
 const customerSchema = mongoose.Schema({
     firstName: {
         type: String,
-        validate: {
-            validator: function (v) {
-                return /^[A-Za-z][A-Za-z0-9 ]+$/.test(v);
-            },
-            message: () => 'First Name must be more than 2 characters and not start with number or special characters'
-        },
-        required: [true, 'First name is required']
+        // @todo check required for companies
+        // validate: {
+        //     validator: function (v) {
+        //         return /^[A-Za-z][A-Za-z0-9 ]+$/.test(v);
+        //     },
+        //     message: () => 'First Name must be more than 2 characters and not start with number or special characters'
+        // },
+        // required: [true, 'First name is required'] 
     },
     lastName: {
         type: String,
-        validate: {
-            validator: function (v) {
-                return /^[A-Za-z][A-Za-z0-9 ]+$/.test(v);
-            },
-            message: () => 'Last Name must be more than 2 characters and not start with number or special characters'
-        },
-        required: [true, 'Last name is required']
+        // @todo check required for companies
+        // validate: {
+        //     validator: function (v) {
+        //         return /^[A-Za-z][A-Za-z0-9 ]+$/.test(v);
+        //     },
+        //     message: () => 'Last Name must be more than 2 characters and not start with number or special characters'
+        // },
+        // required: [true, 'Last name is required'] 
     },
-    gender: { type: String, enum: genders, required: true },
+    gender: { type: String, enum: genders },
     phone: {
         type: String, validate: {
             validator: function (v) {

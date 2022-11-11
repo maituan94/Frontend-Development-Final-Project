@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
 import { renderSimpleInput, renderToggle } from '../../utils'
@@ -9,7 +9,7 @@ import { defaultSigninValue, signInElements } from './constants'
 
 const Signin = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { handleSubmit, reset, setValue, control, formState: { errors } } = useForm({ mode: 'all', defaultValues: defaultSigninValue });
+  const { handleSubmit, reset, control, formState: { errors } } = useForm({ mode: 'all', defaultValues: defaultSigninValue });
   const [data, setData] = useState(null);
 
   const toggleModal = () => {
@@ -65,7 +65,7 @@ const Signin = ({ className }) => {
                   </Dialog.Title>
                   <div className='mt-2'>
                     <form onSubmit={handleSubmit((data) => setData(data))} className='form'>
-                      {signInElements.map((ele, index) =>{
+                      {signInElements.map((ele, index) => {
                         if (ele.type === 'toggle') return renderToggle(ele, control, index)
                         return renderSimpleInput(ele, control, errors, index)
                       })}

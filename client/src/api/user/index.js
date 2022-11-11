@@ -13,3 +13,13 @@ export const createUser = (body) => {
       console.log(error);
     });
 }
+
+export const login = (credentials) => {
+  return axios.post(`${URL}/login`, credentials)
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

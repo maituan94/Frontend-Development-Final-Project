@@ -71,7 +71,7 @@ const ProductTable = () => {
             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               <div class="flex items-center">
                 <svg
-                  class="w-6 h-6"
+                  class="w-8 h-6 pr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -120,7 +120,7 @@ const ProductTable = () => {
             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               <div class="flex items-center">
                 <svg
-                  class="w-6 h-6"
+                  class="w-8 h-6 pr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -169,7 +169,7 @@ const ProductTable = () => {
             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               <div class="flex items-center">
                 <svg
-                  class="w-6 h-6"
+                  class="w-8 h-6 pr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

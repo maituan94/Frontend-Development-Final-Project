@@ -1,16 +1,20 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState, useEffect, useRef } from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { useDispatch } from 'react-redux'
 
+import { createAlert } from '../../redux/alert/alertSlice'
 import { renderSimpleInput, renderToggle } from '../../utils'
 import { defaultSignupValue, signUpElements } from './constants'
 import { createUser } from '../../api/user'
+import { ALERT } from '../../redux/constants'
 
 
 const Signup = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { handleSubmit, reset, setError, control, formState: { errors }, watch } = useForm({ mode: 'all', defaultValues: defaultSignupValue })
+  const dispatch = useDispatch()
 
   const passwordRef = useRef({})
   passwordRef.current = watch('password', '')
@@ -36,10 +40,19 @@ const Signup = ({ className }) => {
     }
 
     if (responseData) {
-      // Redirect to home
       toggleModal()
+      setTimeout(() => {
+        dispatch(
+          createAlert({
+            title: 'Success',
+            message: 'The user has been created',
+            type: ALERT.SUCCESS
+          })
+        )
+      }, 1000)
     }
   }
+
   const elementsToRender = (passwordRef) => {
     if (isSupplierRef.current) {
       return signUpElements(passwordRef)
@@ -115,6 +128,13 @@ const Signup = ({ className }) => {
                       })}
                       <div className='mt-4'>
                         <button
+                          onClick={() => dispatch(
+                            createAlert({
+                              title: 'Success',
+                              message: 'The user has been created',
+                              type: ALERT.SUCCESS
+                            })
+                          )}
                           type='submit'
                           className='inline-flex justify-center rounded-md border border-transparent bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2'>
                           Register

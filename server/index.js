@@ -4,16 +4,20 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import dbConfig from './dbconfig.js'
 
-import UserRouter from './routes/user.route.js'
+import CustomerRouter from './routes/customer.route.js'
 import GeneralRouter from './routes/general.route.js'
+import ProductRouter from './routes/product.route.js'
+import SupplierRouter from './routes/supplier.route.js'
 
 const app = express();
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
-app.use('/api', UserRouter);
+app.use('/api', CustomerRouter);
 app.use('/api', GeneralRouter);
+app.use('/api', ProductRouter);
+app.use('/api', SupplierRouter);
 
 /* This is creating a constant variable called CONNECTION_URL that is a string with the value of the
 connection string to the database. */

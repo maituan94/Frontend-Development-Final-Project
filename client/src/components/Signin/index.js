@@ -2,19 +2,19 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { useDispatch } from 'react-redux'
 
+import { createAlert } from '../../redux/alert/alertSlice'
 import { renderSimpleInput, renderToggle } from '../../utils'
 import { defaultSigninValue, signInElements } from './constants'
-
+import { login } from '../../api/user'
+import { ALERT } from '../../redux/constants'
 
 const Signin = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { handleSubmit, reset, control, formState: { errors } } = useForm({ mode: 'all', defaultValues: defaultSigninValue });
   const [data, setData] = useState(null);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen)
-  }
+  const dispatch = useDispatch()
 
   useEffect(() => {
     return () => {
@@ -22,6 +22,35 @@ const Signin = ({ className }) => {
     }
   }, [isOpen, reset])
 
+  const toggleModal = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const onSubmit = async (data) => {
+    console.log({ data });
+    const { error, data: responseData } = await login(data)
+    if (error || responseData.statusCode === 404) {
+      dispatch(
+        createAlert({
+          title: 'Error',
+          message: responseData.message,
+          type: ALERT.ERROR
+        })
+      )
+    } else {
+      toggleModal()
+      setTimeout(() => {
+        dispatch(
+          createAlert({
+            title: 'Success',
+            message: 'Login sucessfully',
+            type: ALERT.SUCCESS
+          })
+        )
+      }, 1000)
+
+    }
+  }
 
   return (
     <>
@@ -64,7 +93,10 @@ const Signin = ({ className }) => {
                     <XMarkIcon className='absolute top-3 right-3 h-6 w-6' aria-hidden='true' onClick={() => toggleModal()} />
                   </Dialog.Title>
                   <div className='mt-2'>
-                    <form onSubmit={handleSubmit((data) => setData(data))} className='form'>
+                    <form
+                      className='form'
+                      onSubmit={handleSubmit((data) => onSubmit(data))}
+                    >
                       {signInElements.map((ele, index) => {
                         if (ele.type === 'toggle') return renderToggle(ele, control, index)
                         return renderSimpleInput(ele, control, errors, index)

@@ -54,7 +54,7 @@ const supplierSchema = mongoose.Schema({
     products: [
         {
             type:  mongoose.Schema.Types.ObjectId,
-            ref: 'Product'
+            ref: 'product'
         }
     ]
 })
@@ -68,7 +68,7 @@ const supplierModel = mongoose.model('supplier', supplierSchema, 'Supplier')
  */
  export const getAllSuppliers = (callback) => {
     if (typeof callback !== 'function') throw new Error('callback is not a function')
-    supplierModel.find({}, callback)
+    supplierModel.find({}, callback).populate("products")
 }
 
 /**
@@ -79,7 +79,7 @@ const supplierModel = mongoose.model('supplier', supplierSchema, 'Supplier')
 export const getSupplierById = (id, callback) => {
     if (!id) throw new Error('Id is not defined')
     if (typeof callback !== 'function') throw new Error('callback is not a function')
-    supplierModel.findById(id, callback)
+    supplierModel.findById(id, callback).populate("products")
 }
 
 /**
@@ -99,11 +99,11 @@ export const createSupplier = (data, callback) => {
  * @param data - The data to be updated
  * @param callback - A callback function that will be called after the update is complete.
  */
-export const updateSupplier = (id, data, callback) => {
+export const updateSupplier = (id, data, callback, options = {}) => {
     if (!data || !id) throw new Error(' Id or data is not defined')
     if (typeof callback !== 'function') throw new Error('callback is not a function')
 
-    supplierModel.findByIdAndUpdate(id, data, callback)
+    supplierModel.findByIdAndUpdate(id, data, options, callback)
 }
 
 /**

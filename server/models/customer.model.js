@@ -66,13 +66,6 @@ const customerSchema = mongoose.Schema({
         },
         required: [true, 'Password is required']
     },
-    isSendNews: {
-        type: Boolean,
-        default: false
-    },
-    question: {
-        type: String
-    },
     dateOfBirth: {
         type: Date
     }

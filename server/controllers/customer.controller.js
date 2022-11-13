@@ -1,40 +1,16 @@
-import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import {
-    getAllCustomers,
-    getCustomerById,
-    createCustomer,
-    updateCustomer,
-    deleteCustomer as deleteCustomerById,
-    findOneCustomer
+    getAllCustomers as getAll,
+    getCustomerById as getById,
+    createCustomer as create,
+    updateCustomer as update,
+    deleteCustomer as deleteCustomerById
 } from '../models/customer.model.js'
-import {
-    getAllSuppliers,
-    getSupplierById,
-    createSupplier,
-    updateSupplier,
-    deleteSupplier,
-    findOneSupplier
-} from '../models/supplier.model.js'
 
-import { userJsonReponse, userCreateUpdateJson } from '../helper/index.js'
+import { customerJsonReponse, customerCreateUpdateJson } from '../helper/index.js'
 import { statusCode, duplicatedCode } from '../enum/index.js'
 
 dotenv.config()
-const userDict = {
-    getAllCustomers,
-    getCustomerById,
-    createCustomer,
-    updateCustomer,
-    deleteCustomerById,
-    findOneCustomer,
-    getAllSuppliers,
-    getSupplierById,
-    createSupplier,
-    updateSupplier,
-    deleteSupplier,
-    findOneSupplier
-}
 
 /**
  * It gets all the customers from the database and returns them in a JSON response
@@ -42,7 +18,7 @@ const userDict = {
  * @param res - The response object.
  */
 const getCustomers = (req, res) => {
-    getAllCustomers((err, data) => {
+    getAll((err, data) => {
         if (err) {
             console.log(err)
             res.status(statusCode.success).json({
@@ -54,7 +30,7 @@ const getCustomers = (req, res) => {
         console.log(data)
         res.status(statusCode.success).json({
             statusCode: statusCode.success,
-            data: data?.map(d => userJsonReponse(d)) || []
+            data: data?.map(d => customerJsonReponse(d)) || []
         })
     })
 }
@@ -64,9 +40,9 @@ const getCustomers = (req, res) => {
  * @param req - The request object.
  * @param res - The response object.
  */
-const getUserById = (req, res) => {
+const getCustomerById = (req, res) => {
     const id = req.params?.id
-    if (!id || !req.user) {
+    if (!id) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
             error: { message: 'Invalid User Id' }
@@ -74,9 +50,7 @@ const getUserById = (req, res) => {
         return
     }
 
-    const functionName = req.user.isSupplier ? 'getSupplierById' : 'getCustomerById'
-
-    userDict[functionName](id, (err, data) => {
+    getById(id, (err, data) => {
         if (err) {
             console.log(err)
             res.status(statusCode.success).json({
@@ -88,7 +62,7 @@ const getUserById = (req, res) => {
         console.log(data)
         res.status(statusCode.success).json({
             statusCode: statusCode.success,
-            data: userJsonReponse(data) || {}
+            data: customerJsonReponse(data) || {}
         })
     })
 }
@@ -98,7 +72,7 @@ const getUserById = (req, res) => {
  * @param req - The request object.
  * @param res - The response object.
  */
-const createUser = (req, res) => {
+const createCustomer = (req, res) => {
     const user = req.body
     if (!user) {
         res.status(statusCode.success).json({
@@ -108,9 +82,7 @@ const createUser = (req, res) => {
         return
     }
 
-    const functionName = user.isSupplier ? 'createSupplier' : 'createCustomer'
-
-    userDict[functionName](userCreateUpdateJson(user), (err, data) => {
+    create(customerCreateUpdateJson(user), (err, data) => {
         if (err) {
             console.log(err)
             if (err.code === duplicatedCode) {
@@ -123,15 +95,9 @@ const createUser = (req, res) => {
             return
         }
         console.log(data)
-        const secret = process.env.SECRET_JWT_TOKEN
-        const expiresIn = process.env.TOKEN_EXPIRED_TIME
-        let token = jwt.sign({ data: userJsonReponse(data) }, secret, {
-            expiresIn
-        })
         res.status(statusCode.success).json({
             statusCode: statusCode.success,
-            data: userJsonReponse(data) || {},
-            token
+            data: customerJsonReponse(data) || {}
         })
     })
 }
@@ -142,11 +108,11 @@ const createUser = (req, res) => {
  * @param req - The request object.
  * @param res - The response object.
  */
-const updateUser = (req, res) => {
+const updateCustomer = (req, res) => {
     const { id } = req.params
     const user = req.body
 
-    if (!user || !id || !req.user) {
+    if (!user || !id ) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
             error: { message: 'Invalid user' }
@@ -154,9 +120,7 @@ const updateUser = (req, res) => {
         return
     }
 
-    const functionName = req.user.isSupplier ? 'updateSupplier' : 'updateCustomer'
-
-    userDict[functionName](id, userCreateUpdateJson(user), (err, data) => {
+    update(id, customerCreateUpdateJson(user), (err, data) => {
         if (err) {
             console.log(err)
             if (err.code === duplicatedCode) {
@@ -172,7 +136,7 @@ const updateUser = (req, res) => {
         res.status(statusCode.success).json({
             statusCode: statusCode.success,
             message: 'Update user successfully!',
-            data: userJsonReponse(user) || {}
+            data: customerJsonReponse(user) || {}
         })
     })
 
@@ -211,51 +175,10 @@ const deleteCustomer = (req, res) => {
     })
 }
 
-/**
- * It takes in a request and a response, and then it finds a customer by email and password, and if it
- * finds one, it creates a token and sends it back to the client
- * @param req - The request object.
- * @param res - The response object.
- */
-const login = (req, res) => {
-    const { email, password, isSupplier } = req.body
-    const functionName = isSupplier ? 'findOneSupplier' : 'findOneCustomer'
-
-    userDict[functionName]({ email, password }, (err, data) => {
-        if (err) {
-            console.log(err)
-            res.status(statusCode.success).json({
-                statusCode: statusCode.internalServerError,
-                error: err
-            })
-            return
-        }
-        if (!data) {
-            res.status(statusCode.success).json({
-                statusCode: statusCode.notFound,
-                message: 'Invalid Email or Password!'
-            })
-            return
-        }
-        const secret = process.env.SECRET_JWT_TOKEN
-        const expiresIn = process.env.TOKEN_EXPIRED_TIME
-        let token = jwt.sign({ data: userJsonReponse(data) }, secret, {
-            expiresIn
-        })
-        res.status(statusCode.success).json({
-            statusCode: statusCode.success,
-            data: userJsonReponse(data) || {},
-            token: token || null
-        })
-    })
-}
-
-
 export {
     getCustomers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteCustomer,
-    login
+    getCustomerById,
+    createCustomer,
+    updateCustomer,
+    deleteCustomer
 }

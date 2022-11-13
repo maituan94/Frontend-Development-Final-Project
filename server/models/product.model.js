@@ -11,12 +11,18 @@ const productSchema = mongoose.Schema({
         },
         required: [true, 'Product name is required']
     },
-    unitPrice: {
+    supplierId: {
+        type:  mongoose.Schema.Types.ObjectId,
+        ref: 'Supplier'
+    },
+
+    purchasePrice: {
         type: Number,
         default: 0
     },
-    quantity: {
+    salePrice: {
         type: Number,
+        default: 0
     },
     imageUrl: {
         type: String
@@ -25,4 +31,63 @@ const productSchema = mongoose.Schema({
         type: String
     }
 })
-const productModel = mongoose.model('product', supplierSchema, 'Product')
+const productModel = mongoose.model('product', productSchema, 'Product')
+
+/**
+ * It creates a new product in the database
+ * @param data - The data to be inserted into the database.
+ * @param callback - A function that will be called when the operation is complete.
+ */
+export const create = (data, callback) => {
+    if (!data) throw new Error('Data is not defined')
+    if (typeof callback !== 'function') throw new Error('callback is not a function')
+    productModel.create(data, callback)
+}
+
+/**
+ * It updates a product by its id and returns the updated product
+ * @param id - The id of the product to be updated.
+ * @param data - The data to be updated.
+ * @param callback - The callback function that will be called after the update is complete.
+ */
+export const update = (id, data, callback) => {
+    if (!data || !id) throw new Error(' Id or data is not defined')
+    if (typeof callback !== 'function') throw new Error('callback is not a function')
+
+    productModel.findByIdAndUpdate(id, data, callback)
+}
+
+/**
+ * It deletes a product by its id
+ * @param id - The id of the product to be deleted.
+ * @param callback - A callback function that will be called after the document is deleted.
+ */
+export const findByIdAndDelete = (id, callback) => {
+    if (!id) throw new Error(' Id is not defined')
+    if (typeof callback !== 'function') throw new Error('callback is not a function')
+
+    productModel.findByIdAndDelete(id, callback)
+}
+
+/**
+ * It takes an id and a callback function as parameters, and then uses the productModel to find a
+ * product by its id
+ * @param id - The id of the product to get
+ * @param callback - A function that will be called when the query is complete.
+ */
+export const getById = (id, callback) => {
+    if (!id) throw new Error('Id is not defined')
+    if (typeof callback !== 'function') throw new Error('callback is not a function')
+    productModel.findById(id, callback)
+}
+
+/**
+ * GetAll is a function that takes a callback as an argument and returns all the products in the
+ * database.
+ * @param callback - The callback function that will be called when the query is complete.
+ */
+export const getAll = (callback) => {
+    if (typeof callback !== 'function') throw new Error('callback is not a function')
+    productModel.find({}, callback)
+}
+

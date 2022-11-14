@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { API_URL, API_PATH, ENDPOINTS } from '../constants'
 
-const URL = `${API_URL}/${API_PATH}/${ENDPOINTS.USER}`
+const URL = `${API_URL}/${API_PATH}`
 
 export const createUser = (body) => {
   return axios.post(URL, body)
@@ -15,7 +15,7 @@ export const createUser = (body) => {
 }
 
 export const login = (credentials) => {
-  return axios.post(`${URL}/login`, credentials)
+  return axios.post(`${URL}/${ENDPOINTS.LOGIN}`, credentials)
     .then((response) => {
       return response
     })

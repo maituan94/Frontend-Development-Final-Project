@@ -19,9 +19,9 @@ const Alert = () => {
 
   const color = alert.type === 'success' ? 'green' : 'red'
 
-  return show && (
+  return ReactDOM.createPortal(show && (
     <div
-      className={`absolute bottom-0 mx-auto max-w-7xl px-4 sm:px-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-content-end z-10 w-11/12 bg-${color}-100 border-t-4 border-${color}-500 rounded-b text-${color}-900 px-4 py-3 shadow-md`}
+      className={`absolute mb-10 bottom-5 px-4 sm:px-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-content-end z-10 w-9/12 bg-${color}-100 border-t-4 border-${color}-500 rounded-b text-${color}-900 px-4 py-3 shadow-md`}
       role='alert'
     >
       <div className='flex'>
@@ -38,9 +38,9 @@ const Alert = () => {
         </div>
       </div>
     </div>
+  ),
+    document.getElementById("notification-portal")
   )
 }
 
 export default Alert
-// const domElement = document.getElementById("root-portal");
-// export default ReactDOM.createPortal(Alert, domElement)

@@ -4,11 +4,15 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+import { useDispatch } from 'react-redux'
+
 import SignIn from '../components/Signin'
 import Signup from '../components/Signup'
+import { userLogout } from '../redux/user/userSlice'
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false)
+  const dispatch = useDispatch()
 
   const mobileHeader = () => {
     return <Transition
@@ -72,8 +76,13 @@ const Header = () => {
               </Popover.Button>
             </div>
             <div className="cursor-pointer hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-              <SignIn className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900" />
-              <Signup className="cursor-pointer ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-slate-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-700" />
+              {/* <SignIn className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900" /> */}
+              {/* <Signup className="cursor-pointer ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-slate-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-700" /> */}
+              <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full text-sm"
+                onClick={() => dispatch(userLogout(false))}
+              >
+                Log out
+              </button>
             </div>
           </div>
         </div>

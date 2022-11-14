@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div className="w-full ">
+    <div className="w-full mx-auto max-w-7xl px-4 sm:px-6">
       <footer className="border-t-2 border-gray-100 mx-auto max-w-7xl px-4 sm:px-6 p-4 bg-white text-center md:flex md:items-center md:justify-between md:p-6">
         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <span>Moon</span>. All Rights Reserved.
         </span>

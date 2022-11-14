@@ -11,7 +11,7 @@ import { login } from '../../api/user'
 import { ALERT } from '../../redux/constants'
 
 const Signin = ({ className }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
   const { handleSubmit, reset, control, formState: { errors } } = useForm({ mode: 'all', defaultValues: defaultSigninValue });
   const [data, setData] = useState(null);
   const dispatch = useDispatch()

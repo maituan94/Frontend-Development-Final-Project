@@ -99,7 +99,7 @@ export const getCustomerById = (id, callback) => {
  * @param data - The data to be inserted into the database.
  * @param callback - A function that will be called when the operation is complete.
  */
-export const createCustomer = (data, callback) => {
+export const createCustomer = async (data, callback) => {
     if (!data) throw new Error('Data is not defined')
     if (typeof callback !== 'function') throw new Error('callback is not a function')
     customerModel.create(data, callback)

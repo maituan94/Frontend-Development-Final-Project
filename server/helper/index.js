@@ -53,7 +53,7 @@ export const customerCreateUpdateJson = (data) => {
  * id, firstName, lastName, gender, phone, email, homeNumber, address, state, isSendNews, question,
  * dateOfBirth
  */
- export const supplierJsonReponse = (data) => {
+export const supplierJsonReponse = (data) => {
     if (!data) return
     return {
         id: data._id || data.id,
@@ -108,5 +108,27 @@ export const productResponse = (data) => {
         salePrice: data.salePrice,
         imageUrl: data.imageUrl,
         description: data.description
+    }
+}
+
+export const returnPurchaseJson = (data) => {
+    if (!data) return
+    return {
+        id: data._id,
+        customerId: data.customerId,
+        purchaseDate: data.purchaseDate,
+        totalAmount: data.totalAmount,
+        orders: data.orders
+    }
+}
+
+export const returnSaleJson = (data) => {
+    if (!data) return
+    return {
+        id: data._id,
+        supplierId: data.supplierId,
+        purchaseDate: data.purchaseDate,
+        totalAmount: data.totalAmount,
+        orders: data.orders
     }
 }

@@ -1,4 +1,3 @@
-import dotenv from 'dotenv'
 import {
     getAllCustomers as getAll,
     getCustomerById as getById,
@@ -9,8 +8,6 @@ import {
 
 import { customerJsonReponse, customerCreateUpdateJson } from '../helper/index.js'
 import { statusCode, duplicatedCode } from '../enum/index.js'
-
-dotenv.config()
 
 /**
  * It gets all the customers from the database and returns them in a JSON response

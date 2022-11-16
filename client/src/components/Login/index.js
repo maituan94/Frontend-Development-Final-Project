@@ -18,7 +18,6 @@ const Login = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('ENTRA');
     return () => {
       reset()
     }

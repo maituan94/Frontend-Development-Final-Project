@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <Router>
-      {!user.user
+      {false 
         ? <Login />
         : <>
           <Header />

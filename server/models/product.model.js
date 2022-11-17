@@ -81,6 +81,11 @@ export const getById = (id, callback) => {
     productModel.findById(id, callback)
 }
 
+export const asyncGetById = async (id) => {
+    if (!id) throw new Error('Id is not defined')
+    return productModel.findById(id)
+}
+
 /**
  * GetAll is a function that takes a callback as an argument and returns all the products in the
  * database.

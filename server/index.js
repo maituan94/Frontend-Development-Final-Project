@@ -8,6 +8,8 @@ import CustomerRouter from './routes/customer.route.js'
 import GeneralRouter from './routes/general.route.js'
 import ProductRouter from './routes/product.route.js'
 import SupplierRouter from './routes/supplier.route.js'
+import PurchaseRouter from './routes/purchase.route.js'
+import SaleRouter from './routes/sale.route.js'
 
 const app = express();
 app.use(bodyParser.json({limit: "30mb", extended: true}));
@@ -18,6 +20,8 @@ app.use('/api', CustomerRouter);
 app.use('/api', GeneralRouter);
 app.use('/api', ProductRouter);
 app.use('/api', SupplierRouter);
+app.use('/api', PurchaseRouter);
+app.use('/api', SaleRouter);
 
 /* This is creating a constant variable called CONNECTION_URL that is a string with the value of the
 connection string to the database. */

@@ -5,6 +5,7 @@ import Table from '../Table';
 import { getProducts } from '../../api/products';
 import { openModalStack } from '../../redux/alert/alertSlice';
 import PageTop from '../PageTop';
+import TableData from './tableData';
 
 const HEADERS = [
   'Product ID',
@@ -47,6 +48,8 @@ const Products = () => {
         btnLabel='Add Product'
       />)
 
+  const tableData = <TableData data={products} />
+
   return (
     <div>
       <PageTop
@@ -57,7 +60,7 @@ const Products = () => {
       />
       <Table
         headers={HEADERS}
-        data={products}
+        data={tableData}
       />
     </div>
   );

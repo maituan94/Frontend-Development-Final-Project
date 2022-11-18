@@ -3,7 +3,7 @@ import alertReducer from './alert/alertSlice'
 import userReducer from './user/userSlice'
 
 const reducer = combineReducers({
-  notifications: alertReducer,
+  alerts: alertReducer,
   user: userReducer,
 })
 

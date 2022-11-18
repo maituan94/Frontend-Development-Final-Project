@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { useSelector } from 'react-redux'
 
 const Alert = () => {
-  const { notifications } = useSelector(state => state.notifications)
+  const { notifications } = useSelector(state => state.alerts)
   const [alert, setAlert] = useState({ type: '', message: '' })
   const [show, setShow] = useState(false)
 
@@ -21,7 +21,7 @@ const Alert = () => {
 
   return ReactDOM.createPortal(show && (
     <div
-      className={`absolute mb-10 bottom-5 px-4 sm:px-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-content-end z-10 w-8/12 bg-${color}-100 border-t-4 border-${color}-500 rounded-b text-${color}-900 px-4 py-3 shadow-md`}
+      className={`absolute mb-10 bottom-5 px-4 sm:px-6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-content-end z-10 w-3/5 bg-${color}-100 border-t-4 border-${color}-500 rounded-b text-${color}-900 px-4 py-3 shadow-md`}
       role='alert'
     >
       <div className='flex'>

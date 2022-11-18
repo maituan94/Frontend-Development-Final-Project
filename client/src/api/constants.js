@@ -1,8 +1,8 @@
 export const ENDPOINTS = {
   USER: 'user',
   LOGIN: 'login',
-  PRODUCTS: 'products',
-  CUSTOMERS: 'customers'
+  PRODUCT: 'product',
+  CUSTOMER: 'customer'
 }
 
 export const API_STATUS_CODES = {

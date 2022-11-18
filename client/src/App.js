@@ -12,10 +12,11 @@ import Customers from './components/Customers'
 import Suppliers from './components/Suppliers'
 import Products from './components/Products'
 import Purchases from './components/Purchases'
+import ModalStack from './components/ModalStack'
 
 const Main = ({ children }) => {
   return (
-    <main className='relative flex flex-row flex-auto w-full bg-white mx-auto max-w-7xl px-4 sm:px-6'>
+    <main className='relative flex flex-row flex-auto w-full bg-white mx-auto px-4 sm:px-6'>
       {children}
     </main>
   )
@@ -23,20 +24,19 @@ const Main = ({ children }) => {
 
 const ContentWrapper = ({ children }) => {
   return (
-    <div className='w-full shadow-md'>
+    <div className='w-full shadow-md p-4 sm:p-6 relative shadow-md'>
       {children}
     </div>
   )
 }
 
 const App = () => {
-  const { user } = useSelector(state => state)
+  const { isLogged } = useSelector(state => state.user)
 
   return (
     <Router>
-      {false 
-        ? <Login />
-        : <>
+      {isLogged
+        ? <>
           <Header />
           <Main>
             <Sidebar />
@@ -48,11 +48,14 @@ const App = () => {
                 <Route path="/products" element={<Products />} />
                 <Route path="/purchases" element={<Purchases />} />
               </Routes>
+              <ModalStack />
               <Alert />
             </ContentWrapper>
           </Main>
           <Footer />
         </>
+        :
+        <Login />
       }
     </Router>
   )

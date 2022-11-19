@@ -35,7 +35,7 @@ const App = () => {
 
   return (
     <Router>
-      {true
+      {isLogged
         ? <>
           <Header />
           <Main>

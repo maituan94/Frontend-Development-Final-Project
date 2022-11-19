@@ -1,4 +1,4 @@
-export const signInElements = [
+export const createProductElements = [
   {
     name: 'productName',
     rules: {

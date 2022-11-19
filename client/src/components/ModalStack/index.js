@@ -3,7 +3,14 @@ import ReactDOM from 'react-dom'
 import { useSelector } from 'react-redux'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import CreateProductForm from '../Products/createProductForm'
+import Form from '../Form/index'
+
+import { createProductElements } from '../Products/constants';
+import { createSupplierElements } from '../Suppliers/constants'
+import { createCustomerElements } from '../Customers/constants'
+import { createProduct } from '../../api/products'
+import { createSupplier } from '../../api/suppliers'
+import { createCustomers } from '../../api/customers'
 
 const ModalStack = () => {
   const { modal } = useSelector(state => state.alerts)
@@ -21,9 +28,23 @@ const ModalStack = () => {
     setIsOpen(!isOpen)
   }
 
-  const content = {
-    'products': <CreateProductForm />
-  }
+  const formProps = {
+    'products': {
+      elements: createProductElements,
+      createAPICallMethod: createProduct,
+      alertSuccessMessage: 'Product created successfully',
+    },
+    'customers': {
+      elements: createCustomerElements,
+      createAPICallMethod: createCustomers,
+      alertSuccessMessage: 'Customer created successfully'
+    },
+    'suppliers': {
+      elements: createSupplierElements,
+      createAPICallMethod: createSupplier,
+      alertSuccessMessage: 'Supplier created successfully'
+    },
+  }[modal.type]
 
   return ReactDOM.createPortal(
     <Transition appear show={isOpen} as={Fragment}>
@@ -63,7 +84,7 @@ const ModalStack = () => {
                   <XMarkIcon className='absolute top-3 right-3 h-6 w-6' aria-hidden='true' onClick={() => toggleModal()} />
                 </Dialog.Title>
                 <div className='mt-2'>
-                  {content[modal.type]}
+                  <Form {...formProps} />
                 </div>
               </Dialog.Panel>
             </Transition.Child>

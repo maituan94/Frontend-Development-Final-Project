@@ -26,7 +26,7 @@ export const createSupplierElements = [
     {
         name: 'email',
         rules: {
-          required: { value: true, message: 'Must select a gender' },
+          required: { value: true, message: 'Email cannot be empty' },
           pattern: {
             value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]+)*$/,
             message: 'Email is not in the formal abcde@xyz.com'
@@ -45,9 +45,16 @@ export const createSupplierElements = [
       type: 'dropdown'
     },
     {
-      name: 'products',
-      type: 'text',
-      placeholder: 'Enter products here'
-    },
+      name: 'password',
+      rules: {
+        required: { value: true, message: 'Password cannot be empty' },
+        pattern: {
+          value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+          message: 'Password is not valid!'
+        }
+      },
+      type: 'password',
+      placeholder: 'Password'
+    }
   ]
   

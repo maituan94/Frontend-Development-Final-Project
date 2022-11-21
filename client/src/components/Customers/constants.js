@@ -32,6 +32,18 @@ export const createCustomerElements = [
         placeholder: ''
     },
     {
+      name: 'phone',
+      rules: {
+        required: { value: true, message: 'Phone number is required' },
+        pattern: {
+          value: /^\+[0-9]{1,3}\([0-9]{3}\)[0-9]{3}-[0-9]{4}$/,
+          message: 'Phone must be in the formal +1(234)456-6789'
+        }
+      },
+      type: 'text',
+      placeholder: '+1(234)456-6789'
+  },
+    {
         name: "email",
         rules: {
           required: { value: true, message: "Email is empty" },
@@ -53,11 +65,6 @@ export const createCustomerElements = [
     {
       name: 'state',
       type: 'dropdown'
-    },
-    {
-      name: 'dateOfBirth',
-      type: 'text',
-      placeholder: 'Date of Birth'
     },
   ]
   

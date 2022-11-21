@@ -33,16 +33,19 @@ const ModalStack = () => {
       elements: createProductElements,
       createAPICallMethod: createProduct,
       alertSuccessMessage: 'Product created successfully',
+      formKey: 'products',
     },
     'customers': {
       elements: createCustomerElements,
       createAPICallMethod: createCustomers,
-      alertSuccessMessage: 'Customer created successfully'
+      alertSuccessMessage: 'Customer created successfully',
+      formKey: 'customers',
     },
     'suppliers': {
       elements: createSupplierElements,
       createAPICallMethod: createSupplier,
-      alertSuccessMessage: 'Supplier created successfully'
+      alertSuccessMessage: 'Supplier created successfully',
+      formKey: 'suppliers',
     },
   }[modal.type]
 

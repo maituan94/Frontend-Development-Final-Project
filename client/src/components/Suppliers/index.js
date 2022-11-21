@@ -8,12 +8,14 @@ import PageTop from '../PageTop';
 import TableData from './tableData';
 
 const HEADERS = [
+  'Supplier ID',
   'Company name',
   'Phone',
   'Email',
   'Address',
+  //'Product',
   'Province',
-  'Product',
+  'Actions'
 ]
 
 const Suppliers = () => {

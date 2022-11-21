@@ -12,6 +12,7 @@ const Form = ({
   elements,
   createAPICallMethod,
   alertSuccessMessage,
+  formKey,
 }) => {
   const { 
       handleSubmit, 
@@ -55,8 +56,11 @@ const Form = ({
     }
   }
 
+  console.log({errors, isValid});
+
   return (
     <form
+      key={formKey}
       className='form'
       onSubmit={handleSubmit(data => onSubmit(data))}
     >

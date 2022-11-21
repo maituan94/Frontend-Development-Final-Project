@@ -38,9 +38,9 @@ const TableData = ({
     <RowItem>
       {item.state}
     </RowItem>
-    <RowItem>
+    {/* <RowItem>
       {item.products}
-    </RowItem>
+    </RowItem> */}
     <RowItem>
       <div className='flex items-center'>
         <FontAwesomeIcon size='lg' color='' className='mr-3' icon={Icons['faEdit']} />

@@ -48,7 +48,7 @@ const Products = () => {
         btnLabel='Add Product'
       />)
 
-  const tableData = <TableData data={products} />
+  const tableData = <TableData data={products || []} />
 
   return (
     <div>

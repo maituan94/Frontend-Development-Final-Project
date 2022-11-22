@@ -2,16 +2,24 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 
-import { createProduct } from '../../api/products';
-import { renderSimpleInput } from '../../utils'
+import { renderCheckbox, renderDropdown, renderRadio, renderSimpleInput } from '../../utils'
 import { closeModalStack, createAlert } from '../../redux/alert/alertSlice'
 
 import { ALERT } from '../../redux/constants'
 import { API_STATUS_CODES } from '../../api/constants'
-import { signInElements } from './constants'
 
-const CreateProductForm = () => {
-  const { handleSubmit, reset, control, formState: { errors, isValid } } = useForm({
+const Form = ({
+  elements,
+  createAPICallMethod,
+  alertSuccessMessage,
+  formKey,
+}) => {
+  const { 
+      handleSubmit, 
+      reset, 
+      control, 
+      formState: { errors, isValid } 
+    } = useForm({
     mode: 'all',
   });
   const dispatch = useDispatch()
@@ -23,7 +31,8 @@ const CreateProductForm = () => {
   }, [reset])
 
   const onSubmit = async (data) => {
-    const { error, data: responseData } = await createProduct(data)
+    console.log({ data });
+    const { error, data: responseData } = await createAPICallMethod(data)
     console.log({ responseData });
     if (error || responseData.statusCode === API_STATUS_CODES.BAD_REQUEST) {
       dispatch(
@@ -39,7 +48,7 @@ const CreateProductForm = () => {
         dispatch(
           createAlert({
             title: 'Success',
-            message: 'Product created successfully',
+            message: alertSuccessMessage,
             type: ALERT.SUCCESS
           })
         )
@@ -47,12 +56,21 @@ const CreateProductForm = () => {
     }
   }
 
+  console.log({errors, isValid});
+
   return (
     <form
+      key={formKey}
       className='form'
-      onSubmit={handleSubmit((data) => onSubmit(data))}
+      onSubmit={handleSubmit(data => onSubmit(data))}
     >
-      {signInElements.map((ele, index) => {
+      {elements?.map((ele, index) => {
+        if (ele.type === "radio"){
+          return renderRadio(ele, control, errors, index)
+        }
+        if (ele.type === "dropdown"){
+          return renderDropdown(ele, control, errors, index)
+        }
         return renderSimpleInput(ele, control, errors, index)
       })}
 
@@ -62,7 +80,7 @@ const CreateProductForm = () => {
           type="button"
           onClick={() => dispatch(closeModalStack())}
           className="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
-          data-bs-dismiss="modal">
+          >
           Close
         </button>
         <button
@@ -77,4 +95,4 @@ const CreateProductForm = () => {
   );
 }
 
-export default CreateProductForm;
+export default Form;

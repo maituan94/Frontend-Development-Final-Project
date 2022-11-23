@@ -1,8 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { useSelector } from 'react-redux'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
 import Form from '../Form/index'
 
 import { createProductElements } from '../Products/constants';
@@ -14,89 +12,60 @@ import { createCustomers } from '../../api/customers'
 
 const ModalStack = () => {
   const { modal } = useSelector(state => state.alerts)
-  const [isOpen, setIsOpen] = useState(false)
-
-  useEffect(() => {
-    if (Object.keys(modal).length !== 0) {
-      setIsOpen(true)
-    } else {
-      setIsOpen(false)
-    }
-  }, [modal])
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen)
-  }
 
   const formProps = {
     'products': {
       elements: createProductElements,
       createAPICallMethod: createProduct,
       alertSuccessMessage: 'Product created successfully',
-      formKey: 'products',
+      formKey: 'addProduct',
     },
     'customers': {
       elements: createCustomerElements,
       createAPICallMethod: createCustomers,
       alertSuccessMessage: 'Customer created successfully',
-      formKey: 'customers',
+      formKey: 'addCustomer',
     },
     'suppliers': {
       elements: createSupplierElements,
       createAPICallMethod: createSupplier,
       alertSuccessMessage: 'Supplier created successfully',
-      formKey: 'suppliers',
+      formKey: 'addSupplier',
     },
   }[modal.type]
 
-  return ReactDOM.createPortal(
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog
-        as='div'
-        className='relative z-10'
-        onClose={toggleModal}
-      >
-        <Transition.Child
-          as={Fragment}
-          enter='ease-out duration-100'
-          enterFrom='opacity-0'
-          enterTo='opacity-100'
-          leave='ease-in duration-100'
-          leaveFrom='opacity-100'
-          leaveTo='opacity-0'
-        >
-          <div className='fixed inset-0 bg-black bg-opacity-25' />
-        </Transition.Child>
+  return (
+    ReactDOM.createPortal(
 
-        <div className='fixed inset-0 overflow-y-auto'>
-          <div className='flex min-h-full items-center justify-center p-4 text-center'>
-            <Transition.Child
-              as={Fragment}
-              enter='ease-out duration-200'
-              enterFrom='opacity-0 scale-95'
-              enterTo='opacity-100 scale-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100 scale-100'
-              leaveTo='opacity-0 scale-95'
-            >
-              <Dialog.Panel className='w-full max-w-xl transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl'>
-                <Dialog.Title
-                  as='h3'
-                  className='text-lg font-medium leading-6 text-gray-900 mb-5'>
-                  {modal.title}
-                  <XMarkIcon className='absolute top-3 right-3 h-6 w-6' aria-hidden='true' onClick={() => toggleModal()} />
-                </Dialog.Title>
-                <div className='mt-2'>
-                  <Form {...formProps} />
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+      <div
+        className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        id='modalStack'
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden='true'
+      >
+        <div className="modal-dialog relative w-auto pointer-events-none">
+          <div
+            className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+            <div
+              className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+              <h5 className="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
+                {modal.title}
+              </h5>
+              <button type="button"
+                className="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div className="modal-body relative p-4">
+              <Form {...formProps} />
+            </div>
           </div>
         </div>
-      </Dialog>
-    </Transition>
-    ,
-    document.getElementById('modals-portal')
+      </div>
+      ,
+      document.getElementById('modals-portal')
+    )
   )
 }
 

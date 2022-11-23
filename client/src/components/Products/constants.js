@@ -13,8 +13,8 @@ export const createProductElements = [
   },
   {
     name: 'supplierId',
-    type: 'text',
-    placeholder: 'Supplier Id'
+    type: 'dropdown',
+    placeholder: 'Select Supplier'
   },
   {
     name: 'purchasePrice',

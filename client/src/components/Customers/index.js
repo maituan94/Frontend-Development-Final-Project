@@ -17,7 +17,6 @@ const HEADERS = [
   'Home number',
   'Address',
   'State',
-  'DOB'
 ]
 
 const Customers = () => {

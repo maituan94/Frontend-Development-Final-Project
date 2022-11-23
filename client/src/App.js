@@ -11,12 +11,13 @@ import Sidebar from './components/Sidebar'
 import Customers from './components/Customers'
 import Suppliers from './components/Suppliers'
 import Products from './components/Products'
-import Purchases from './components/Purchases'
 import ModalStack from './components/ModalStack'
+
+import 'tw-elements';
 
 const Main = ({ children }) => {
   return (
-    <main className='relative flex flex-row flex-auto w-full bg-white mx-auto px-4 sm:px-6'>
+    <main className='relative flex flex-row flex-auto w-full max-w-7xl bg-white mx-auto px-4 sm:px-6'>
       {children}
     </main>
   )
@@ -24,7 +25,7 @@ const Main = ({ children }) => {
 
 const ContentWrapper = ({ children }) => {
   return (
-    <div className='w-full shadow-md p-4 sm:p-6 relative shadow-md'>
+    <div className='w-4/5 shadow-md p-4 sm:p-6 relative shadow-md'>
       {children}
     </div>
   )
@@ -35,7 +36,7 @@ const App = () => {
 
   return (
     <Router>
-      {true
+      {isLogged
         ? <>
           <Header />
           <Main>
@@ -43,10 +44,10 @@ const App = () => {
             <ContentWrapper>
               <Routes>
                 {/* Add Route here */}
+                <Route index element={<Customers />} />
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/suppliers" element={<Suppliers />} />
                 <Route path="/products" element={<Products />} />
-                <Route path="/purchases" element={<Purchases />} />
               </Routes>
               <ModalStack />
               <Alert />

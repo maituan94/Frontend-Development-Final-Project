@@ -6,7 +6,7 @@ const PageTop = ({
   heading,
   description,
   btnOnClick,
-  btnLabel
+  btnLabel,
 }) => {
   return (
     <div className='flex justify-between py-5 relative'>
@@ -20,10 +20,10 @@ const PageTop = ({
       </div>
       <div className='text-right'>
         <button
-          data-bs-toggle='modal'
-          data-modal-toggle='authentication-modal'
           className='bg-green-300 hover:bg-green-400 text-green-800 font-bold py-2 px-4 rounded inline-flex items-center'
           onClick={btnOnClick}
+          data-bs-toggle="modal"
+          data-bs-target='#modalStack'
         >
           <FontAwesomeIcon
             size='lg'

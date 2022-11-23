@@ -35,6 +35,7 @@ const Products = () => {
       openModalStack({
         type: 'products',
         title: 'Create Product',
+        id: 'addProduct'
       })
     )
   }
@@ -51,7 +52,7 @@ const Products = () => {
   const tableData = <TableData data={products || []} />
 
   return (
-    <div>
+    <>
       <PageTop
         heading='My products'
         description='Manage your products here.'
@@ -62,7 +63,7 @@ const Products = () => {
         headers={HEADERS}
         data={tableData}
       />
-    </div>
+    </>
   );
 };
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { register, useForm, FormProvider } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 
-import { renderCheckbox, renderDropdown, renderRadio, renderSimpleInput } from '../../utils'
+import { renderDropdown, renderRadio, renderSimpleInput } from '../../utils'
 import { closeModalStack, createAlert } from '../../redux/alert/alertSlice'
 import { getSuppliers } from '../../api/suppliers';
 
@@ -16,6 +16,7 @@ const Form = ({
   createAPICallMethod,
   alertSuccessMessage,
   formKey,
+  updateStore,
 }) => {
   const [suppliers, setSuppliers] = useState({});
   const [options, setOptions] = useState(provinces);
@@ -23,6 +24,7 @@ const Form = ({
   const {
     handleSubmit,
     reset,
+    setError,
     control,
     register,
     formState: { errors, isValid }
@@ -58,18 +60,12 @@ const Form = ({
 
 
   const onSubmit = async (data) => {
-    console.log({ data });
-    const { error, data: responseData } = await createAPICallMethod(data)
-    console.log({ responseData });
-    if (error || responseData.statusCode === API_STATUS_CODES.BAD_REQUEST) {
-      dispatch(
-        createAlert({
-          title: 'Error',
-          message: responseData.error,
-          type: ALERT.ERROR
-        })
-      )
+    const { data: responseData } = await createAPICallMethod(data)
+    if (responseData.statusCode === API_STATUS_CODES.BAD_REQUEST) {
+      const keyError = Object.keys(responseData.error.keyPattern)[0]
+      setError(keyError, { message: responseData.error.message })
     } else if (responseData.statusCode === API_STATUS_CODES.SUCCESS) {
+      dispatch(updateStore(responseData.data))
       dispatch(closeModalStack())
       const closeButton = document.getElementById(`dismiss-${formKey}`)
       closeButton.click()

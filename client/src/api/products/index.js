@@ -25,3 +25,14 @@ export const createProduct = (body) => {
       console.log(error);
     });
 };
+
+export const deleteProduct = (id) => {
+  return axios
+    .delete(`${URL}/${id}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

@@ -25,3 +25,14 @@ export const createCustomers = (body) => {
       console.log(error);
     });
 };
+
+export const deleteCustomer = (id) => {
+  return axios
+    .delete(`${URL}/${id}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

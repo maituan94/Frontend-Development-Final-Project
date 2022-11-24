@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Table from '../Table';
-import { getProducts } from '../../api/products';
+import { ALERT } from '../../redux/constants'
+import { getProducts, deleteProduct } from '../../api/products';
+import { createAlert } from '../../redux/alert/alertSlice'
 import { openModalStack } from '../../redux/alert/alertSlice';
 import PageTop from '../PageTop';
 import TableData from './tableData';
+import { initializeProducts } from '../../redux/records/recordsSlice';
 
 const HEADERS = [
   'Product ID',
@@ -19,13 +22,15 @@ const HEADERS = [
 ]
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const [data, setData] = useState([]);
+  const { products } = useSelector(state => state.records)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await getProducts();
-      setProducts(response.data)
+      setData(response.data)
+      dispatch(initializeProducts(response.data))
     }
     fetchData();
   }, []);
@@ -40,6 +45,21 @@ const Products = () => {
     )
   }
 
+  const handleOnDelete = (id) => {
+    deleteProduct(id)
+    const newProducts = products.filter(product => product.id !== id)
+    dispatch(initializeProducts(newProducts))
+    setTimeout(() => {
+      dispatch(
+        createAlert({
+          title: 'Success',
+          message: 'Product deleted successfully',
+          type: ALERT.SUCCESS
+        })
+      )
+    }, 2000)
+  }
+
   if (!products.length)
     return (
       <PageTop
@@ -49,7 +69,7 @@ const Products = () => {
         btnLabel='Add Product'
       />)
 
-  const tableData = <TableData data={products || []} />
+  const tableData = <TableData data={products || []} onClickRemove={handleOnDelete} />
 
   return (
     <>

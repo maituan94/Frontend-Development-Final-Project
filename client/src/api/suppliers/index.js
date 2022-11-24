@@ -25,3 +25,14 @@ export const createSupplier = (body) => {
       console.log(error);
     });
 };
+
+export const deleteSupplier = (id) => {
+  return axios
+    .delete(`${URL}/${id}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

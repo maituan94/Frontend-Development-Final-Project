@@ -4,6 +4,7 @@ const initialState = {
   customers: [],
   suppliers: [],
   products: [],
+  purchases: [],
 }
 
 const recordsSlice = createSlice({
@@ -28,6 +29,12 @@ const recordsSlice = createSlice({
     updateProducts: (state, action) => {
       state.products.push(action.payload)
     },
+    initializePurchases: (state, action) => {
+      state.pruchases = action.payload
+    },
+    updatePurchases: (state, action) => {
+      state.purhcases.push(action.payload)
+    },
   },
   extraReducers: {},
 })
@@ -38,7 +45,9 @@ export const {
   updateSuppliers,
   initializeSuppliers,
   updateProducts,
-  initializeProducts
+  initializeProducts,
+  updatePurchases,
+  initializePurchases
 } = recordsSlice.actions;
 
 export default recordsSlice.reducer

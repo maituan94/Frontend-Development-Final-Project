@@ -6,14 +6,17 @@ import Form from '../Form/index'
 import { createProductElements } from '../Products/constants';
 import { createSupplierElements } from '../Suppliers/constants'
 import { createCustomerElements } from '../Customers/constants'
+import { createPurchaseElements } from '../Invoices/Purchases/constants';
 import { createProduct } from '../../api/products'
 import { createSupplier } from '../../api/suppliers'
 import { createCustomers } from '../../api/customers'
+import { createPurchase } from '../../api/purchases';
 
 import {
   updateCustomers,
   updateSuppliers,
   updateProducts,
+  updatePurchases,
 } from '../../redux/records/recordsSlice';
 
 const ModalStack = () => {
@@ -40,6 +43,13 @@ const ModalStack = () => {
       alertSuccessMessage: 'Supplier created successfully',
       formKey: 'addSupplier',
       updateStore: updateSuppliers,
+    },
+    'purchases': {
+      elements: createPurchaseElements,
+      createAPICallMethod: createPurchase,
+      alertSuccessMessage: 'Purchase created successfully',
+      formKey: 'addPurchase',
+      updateStore: updatePurchases,
     },
   }[modal.type]
 

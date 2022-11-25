@@ -3,7 +3,9 @@ export const ENDPOINTS = {
   LOGIN: 'login',
   PRODUCT: 'product',
   CUSTOMER: 'customer',
-  SUPPLIER: 'supplier'
+  SUPPLIER: 'supplier',
+  PURCHASE: 'purchase',
+  SALE: 'sale'
 }
 
 export const API_STATUS_CODES = {

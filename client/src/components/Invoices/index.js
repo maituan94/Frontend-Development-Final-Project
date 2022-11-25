@@ -1,7 +1,6 @@
 import React from 'react';
-import Customers from '../Customers';
-import Products from '../Products';
 import Purchases from './Purchases';
+import Sales from './Sales';
 
 const Invoices = () => {
   return (
@@ -46,10 +45,10 @@ const Invoices = () => {
 </ul>
 <div class="tab-content" id="tabs-tabContent">
   <div class="tab-pane fade show active" id="tabs-home" role="tabpanel" aria-labelledby="tabs-home-tab">
-    <Purchases />
+    <Sales />
   </div>
   <div class="tab-pane fade" id="tabs-profile" role="tabpanel" aria-labelledby="tabs-profile-tab">
-    <Products />
+    <Purchases />
   </div>
 </div>
     </div>

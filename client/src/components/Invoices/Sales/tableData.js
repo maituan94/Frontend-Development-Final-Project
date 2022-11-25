@@ -22,31 +22,16 @@ const TableData = ({
       scope='row'
       className='px-6 py-4 text-sm font-medium text-indigo-800'
     >
-      {item.id}
+      {item.supplierId}
     </th>
     <RowItem>
-      {item.firstName}
+      {item.date}
     </RowItem>
     <RowItem>
-      {item.lastName}
+      {item.orders}
     </RowItem>
     <RowItem>
-      {item.gender}
-    </RowItem>
-    <RowItem>
-      {item.phone}
-    </RowItem>
-    <RowItem>
-      {item.email}
-    </RowItem>
-    <RowItem>
-      {item.homeNumber}
-    </RowItem>
-    <RowItem>
-      {item.address}
-    </RowItem>
-    <RowItem>
-      {item.state}
+      {item.totalAmount}
     </RowItem>
     <RowItem>
       <div className='flex items-center'>

@@ -1,38 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
-import Table from '../Table';
-import { ALERT } from '../../redux/constants'
-import { getCustomers, deleteCustomer } from '../../api/customers';
-import { createAlert } from '../../redux/alert/alertSlice'
-import { openModalStack } from '../../redux/alert/alertSlice';
-import { initializeCustomers } from '../../redux/records/recordsSlice';
-import PageTop from '../PageTop';
+import Table from '../../Table';
+import { ALERT } from '../../../redux/constants'
+import { getSales, deleteSale } from '../../../api/sales';
+import { createAlert } from '../../../redux/alert/alertSlice'
+import { openModalStack } from '../../../redux/alert/alertSlice';
+import { initializeSales } from '../../../redux/records/recordsSlice';
+import PageTop from '../../PageTop';
 import TableData from './tableData';
 
 const HEADERS = [
-  'Customer ID',
-  'First Name',
-  'Last Name',
-  'Gender',
-  'Phone',
-  'Email',
-  'Home number',
-  'Address',
-  'State',
-  'Actions',
+  'Supplier ID',
+  'Date',
+  'Orders',
+  'Total items',
+  'Price per unit',
+  'Price total'
 ]
 
-const Customers = () => {
+const Sales = () => {
   const [data, setData] = useState([]);
-  const { customers } = useSelector(state => state.records)
+  const { Sales } = useSelector(state => state.records)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getCustomers();
+      const response = await getSales();
       setData(response.data)
-      dispatch(initializeCustomers(response.data))
+      dispatch(initializeSales(response.data))
     }
     fetchData();
   }, []);
@@ -40,45 +36,45 @@ const Customers = () => {
   const onClick = () => {
     dispatch(
       openModalStack({
-        type: 'customers',
-        title: 'Create Customers',
+        type: 'sales',
+        title: 'Create Sales',
       })
     )
   }
 
   const handleOnDelete = (id) => {
-    deleteCustomer(id)
-    const newCustomers = customers.filter(customer => customer.id !== id)
-    dispatch(initializeCustomers(newCustomers))
+    deleteSale(id)
+    const newSales = Sales.filter(Sale => Sale.id !== id)
+    dispatch(initializeSales(newSales))
     setTimeout(() => {
       dispatch(
         createAlert({
           title: 'Success',
-          message: 'Customer deleted successfully',
+          message: 'Sale deleted successfully',
           type: ALERT.SUCCESS
         })
       )
     }, 2000)
   }
 
-  if (!customers?.length)
+  if (!Sales?.length)
     return (
       <PageTop
-        heading='No customers'
-        description='Create a new customer'
+        heading='No Sales'
+        description='Create a new Sale'
         btnOnClick={onClick}
-        btnLabel='Add customer'
+        btnLabel='Add Sale'
       />)
 
-  const tableData = <TableData data={customers} onClickRemove={handleOnDelete} />
+  const tableData = <TableData data={Sales} onClickRemove={handleOnDelete} />
 
   return (
     <div>
       <PageTop
-        heading='My customers'
-        description='Manage your customers here.'
+        heading='My sales'
+        description='Manage your sales here.'
         btnOnClick={onClick}
-        btnLabel='Add customer'
+        btnLabel='Add sale'
       />
       <Table
         headers={HEADERS}
@@ -88,4 +84,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Sales;

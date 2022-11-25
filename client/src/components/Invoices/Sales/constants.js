@@ -1,8 +1,8 @@
 export const createSaleElements = [
   {
-    name: 'supplierId',
+    name: 'customerId',
     type: 'dropdown',
-    placeholder: 'Select Supplier'
+    placeholder: 'Select customer'
   },
   {
     name: 'purchaseDate',

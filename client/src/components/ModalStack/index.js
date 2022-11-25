@@ -10,6 +10,12 @@ import { createProduct } from '../../api/products'
 import { createSupplier } from '../../api/suppliers'
 import { createCustomers } from '../../api/customers'
 
+import {
+  updateCustomers,
+  updateSuppliers,
+  updateProducts,
+} from '../../redux/records/recordsSlice';
+
 const ModalStack = () => {
   const { modal } = useSelector(state => state.alerts)
 
@@ -19,18 +25,21 @@ const ModalStack = () => {
       createAPICallMethod: createProduct,
       alertSuccessMessage: 'Product created successfully',
       formKey: 'addProduct',
+      updateStore: updateProducts,
     },
     'customers': {
       elements: createCustomerElements,
       createAPICallMethod: createCustomers,
       alertSuccessMessage: 'Customer created successfully',
       formKey: 'addCustomer',
+      updateStore: updateCustomers,
     },
     'suppliers': {
       elements: createSupplierElements,
       createAPICallMethod: createSupplier,
       alertSuccessMessage: 'Supplier created successfully',
       formKey: 'addSupplier',
+      updateStore: updateSuppliers,
     },
   }[modal.type]
 

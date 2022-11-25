@@ -17,7 +17,8 @@ import 'tw-elements';
 
 const Main = ({ children }) => {
   return (
-    <main className='relative flex flex-row flex-auto w-full max-w-7xl bg-white mx-auto px-4 sm:px-6'>
+    <main
+      className='relative flex flex-row flex-auto w-full max-w-7xl bg-white mx-auto px-4 sm:px-6'>
       {children}
     </main>
   )

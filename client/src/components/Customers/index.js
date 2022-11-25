@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Table from '../Table';
-import { getCustomers } from '../../api/customers';
+import { ALERT } from '../../redux/constants'
+import { getCustomers, deleteCustomer } from '../../api/customers';
+import { createAlert } from '../../redux/alert/alertSlice'
 import { openModalStack } from '../../redux/alert/alertSlice';
+import { initializeCustomers } from '../../redux/records/recordsSlice';
 import PageTop from '../PageTop';
 import TableData from './tableData';
 
@@ -17,16 +20,19 @@ const HEADERS = [
   'Home number',
   'Address',
   'State',
+  'Actions',
 ]
 
 const Customers = () => {
-  const [customers, setCustomers] = useState([]);
+  const [data, setData] = useState([]);
+  const { customers } = useSelector(state => state.records)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await getCustomers();
-      setCustomers(response.data)
+      setData(response.data)
+      dispatch(initializeCustomers(response.data))
     }
     fetchData();
   }, []);
@@ -40,7 +46,22 @@ const Customers = () => {
     )
   }
 
-  if (!customers.length)
+  const handleOnDelete = (id) => {
+    deleteCustomer(id)
+    const newCustomers = customers.filter(customer => customer.id !== id)
+    dispatch(initializeCustomers(newCustomers))
+    setTimeout(() => {
+      dispatch(
+        createAlert({
+          title: 'Success',
+          message: 'Customer deleted successfully',
+          type: ALERT.SUCCESS
+        })
+      )
+    }, 2000)
+  }
+
+  if (!customers?.length)
     return (
       <PageTop
         heading='No customers'
@@ -49,7 +70,7 @@ const Customers = () => {
         btnLabel='Add customer'
       />)
 
-  const tableData = <TableData data={customers} />
+  const tableData = <TableData data={customers} onClickRemove={handleOnDelete} />
 
   return (
     <div>

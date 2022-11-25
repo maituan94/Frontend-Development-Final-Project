@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Table from '../Table';
-import { getSuppliers } from '../../api/suppliers';
+import { ALERT } from '../../redux/constants'
+import { deleteSupplier, getSuppliers } from '../../api/suppliers';
+import { createAlert } from '../../redux/alert/alertSlice'
 import { openModalStack } from '../../redux/alert/alertSlice';
 import PageTop from '../PageTop';
 import TableData from './tableData';
+import { initializeSuppliers } from '../../redux/records/recordsSlice';
 
 const HEADERS = [
   'Supplier ID',
@@ -19,13 +22,15 @@ const HEADERS = [
 ]
 
 const Suppliers = () => {
-  const [suppliers, setSuppliers] = useState([]);
+  const [data, setData] = useState([]);
+  const { suppliers } = useSelector(state => state.records)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await getSuppliers();
-      setSuppliers(response.data)
+      setData(response.data)
+      dispatch(initializeSuppliers(response.data))
     }
     fetchData();
   }, []);
@@ -39,6 +44,21 @@ const Suppliers = () => {
     )
   }
 
+  const handleOnDelete = (id) => {
+    deleteSupplier(id)
+    const newSuppliers = suppliers.filter(supplier => supplier.id !== id)
+    dispatch(initializeSuppliers(newSuppliers))
+    setTimeout(() => {
+      dispatch(
+        createAlert({
+          title: 'Success',
+          message: 'Supplier deleted successfully',
+          type: ALERT.SUCCESS
+        })
+      )
+    }, 2000)
+  }
+
   if (!suppliers.length)
     return (
       <PageTop
@@ -48,7 +68,7 @@ const Suppliers = () => {
         btnLabel='Add Supplier'
       />)
 
-  const tableData = <TableData data={suppliers} />
+  const tableData = <TableData data={suppliers} onClickRemove={handleOnDelete} />
 
   return (
     <div>

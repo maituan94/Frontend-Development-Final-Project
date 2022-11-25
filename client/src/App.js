@@ -14,6 +14,7 @@ import Products from './components/Products'
 import ModalStack from './components/ModalStack'
 
 import 'tw-elements';
+import Invoices from './components/Invoices'
 
 const Main = ({ children }) => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/suppliers" element={<Suppliers />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/invoices" element={<Invoices />} />
               </Routes>
               <ModalStack />
               <Alert />

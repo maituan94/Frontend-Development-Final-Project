@@ -13,8 +13,8 @@ import { returnPurchaseJson } from '../helper/index.js'
 
 export const createPurchase = async (req, res) => {
     const purchase = req.body
-    const { products, customerId } = purchase
-    if (!purchase || !products || !customerId) {
+    const { products, supplierId } = purchase
+    if (!purchase || !products || !supplierId) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
             error: { message: 'Invalid purhcase' }
@@ -22,7 +22,7 @@ export const createPurchase = async (req, res) => {
         return
     }
     
-    //@Todo: Validate customerId before create
+    //@Todo: Validate supplierId before create
     try {
         const orderItems = await createOrderItem(products)
 
@@ -35,7 +35,7 @@ export const createPurchase = async (req, res) => {
 
         console.log('orderItems',orderItems)
         create({
-            customerId,
+            supplierId,
             totalAmount,
             orders: orderItems
         }, (err, data) => {

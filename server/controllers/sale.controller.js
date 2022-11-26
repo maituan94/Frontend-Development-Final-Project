@@ -13,16 +13,16 @@ import { returnSaleJson } from '../helper/index.js'
 
 export const createSale = async (req, res) => {
     const sale = req.body
-    const { products, supplierId } = sale
-    if (!sale || !products || !supplierId) {
+    const { products, customerId } = sale
+    if (!sale || !products || !customerId) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
-            error: { message: 'Invalid purhcase' }
+            error: { message: 'Invalid Sale' }
         })
         return
     }
     
-    //@Todo: Validate supplierId before create
+    //@Todo: Validate customerId before create
     try {
         const orderItems = await createOrderItem(products)
 
@@ -35,7 +35,7 @@ export const createSale = async (req, res) => {
 
         console.log('orderItems',orderItems)
         create({
-            supplierId,
+            customerId,
             totalAmount,
             orders: orderItems
         }, (err, data) => {

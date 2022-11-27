@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
-const saleSchema = mongoose.Schema({
-    customerId: {
+const purchaseSchema = mongoose.Schema({
+    supplierId: {
         type:  mongoose.Schema.Types.ObjectId,
-        ref: 'Customer'
+        ref: 'Supplier'
     },
-    saleDate: {
+    purchaseDate: {
         type: Date,
         default: Date.now()
     },
@@ -19,7 +19,7 @@ const saleSchema = mongoose.Schema({
         type: Number
     }
 })
-const saleModel = mongoose.model('sale', saleSchema, 'Sale')
+const purchaseModel = mongoose.model('purchase', purchaseSchema, 'Purchase')
 
 /**
  * It creates a new product in the database
@@ -29,11 +29,11 @@ const saleModel = mongoose.model('sale', saleSchema, 'Sale')
  export const create = (data, callback) => {
     if (!data) throw new Error('Data is not defined')
     if (typeof callback !== 'function') throw new Error('callback is not a function')
-    saleModel.create(data, callback)
+    purchaseModel.create(data, callback)
 }
 
 /**
- * It takes an id and a callback function as parameters, and then uses the saleModel to find a
+ * It takes an id and a callback function as parameters, and then uses the purchaseModel to find a
  * product by its id
  * @param id - The id of the product to get
  * @param callback - A function that will be called when the query is complete.
@@ -41,7 +41,7 @@ const saleModel = mongoose.model('sale', saleSchema, 'Sale')
 export const getById = (id, callback) => {
     if (!id) throw new Error('Id is not defined')
     if (typeof callback !== 'function') throw new Error('callback is not a function')
-    saleModel.findById(id, callback).populate("orders")
+    purchaseModel.findById(id, callback).populate("orders")
 }
 
 /**
@@ -51,5 +51,5 @@ export const getById = (id, callback) => {
  */
 export const getAll = (callback) => {
     if (typeof callback !== 'function') throw new Error('callback is not a function')
-    saleModel.find({}, callback).populate("orders")
+    purchaseModel.find({}, callback).populate("orders")
 }

@@ -81,6 +81,11 @@ export const getById = (id, callback) => {
     productModel.findById(id, callback)
 }
 
+/**
+ * It returns a product by id
+ * @param id - The id of the product to be retrieved.
+ * @returns The productModel.findById(id) is being returned.
+ */
 export const asyncGetById = async (id) => {
     if (!id) throw new Error('Id is not defined')
     return productModel.findById(id)

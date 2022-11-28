@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
 const purchaseSchema = mongoose.Schema({
-    customerId: {
+    supplierId: {
         type:  mongoose.Schema.Types.ObjectId,
-        ref: 'Customer'
+        ref: 'Supplier'
     },
     purchaseDate: {
         type: Date,

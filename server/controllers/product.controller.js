@@ -3,6 +3,11 @@ import { updateSupplier } from "../models/supplier.model.js"
 import { statusCode, duplicatedCode } from '../enum/index.js'
 import { productMappingJson, productResponse } from "../helper/index.js"
 
+/**
+ * It creates a product and updates the supplier's products array with the newly created product's id
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const createProduct = (req, res) => {
     const product = req.body
 
@@ -13,8 +18,6 @@ export const createProduct = (req, res) => {
         })
         return
     }
-
-    //@To-do: verify supplier first
     
     create(productMappingJson(product), (err, data) => {
         if (err) {
@@ -41,6 +44,11 @@ export const createProduct = (req, res) => {
     })
 }
 
+/**
+ * It updates a product in the database
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const updateProduct = (req, res) => {
     const { id } = req.params
     const product = req.body
@@ -74,6 +82,12 @@ export const updateProduct = (req, res) => {
     })
 }
 
+/**
+ * It deletes a product by its id, and then updates the supplier's products array by removing the
+ * deleted product's id
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const deleteProduct = (req, res) => {
     const id = req.params?.id
     if (!id) {
@@ -104,6 +118,11 @@ export const deleteProduct = (req, res) => {
     })
 }
 
+/**
+ * It gets all the products from the database and returns them to the user
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const getAllProducts = (req, res) => {
     getAll((err, data) => {
         if (err) {
@@ -122,6 +141,12 @@ export const getAllProducts = (req, res) => {
     })
 }
 
+/**
+ * It gets the product by id from the database and returns it to the user
+ * @param req - The request object.
+ * @param res - The response object that will be sent back to the client.
+ * @returns The productResponse function is being returned.
+ */
 export const getProductById = (req, res) => {
     const id = req.params?.id
     if (!id) {

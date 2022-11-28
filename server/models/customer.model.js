@@ -65,9 +65,6 @@ const customerSchema = mongoose.Schema({
             message: () => `Password is not valid!`
         },
         required: [true, 'Password is required']
-    },
-    dateOfBirth: {
-        type: Date
     }
 })
 

@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
 const saleSchema = mongoose.Schema({
-    supplierId: {
+    customerId: {
         type:  mongoose.Schema.Types.ObjectId,
-        ref: 'Supplier'
+        ref: 'Customer'
     },
-    purchaseDate: {
+    saleDate: {
         type: Date,
         default: Date.now()
     },

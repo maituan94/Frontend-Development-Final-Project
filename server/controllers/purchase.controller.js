@@ -11,10 +11,15 @@ import { create as createOrderItem} from '../models/orderItem.model.js'
 import { statusCode } from '../enum/index.js'
 import { returnPurchaseJson } from '../helper/index.js'
 
+/**
+ * It creates a purchase order and returns the purchase order details
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const createPurchase = async (req, res) => {
     const purchase = req.body
-    const { products, customerId } = purchase
-    if (!purchase || !products || !customerId) {
+    const { products, supplierId } = purchase
+    if (!purchase || !products || !supplierId) {
         res.status(statusCode.success).json({
             statusCode: statusCode.badRequest,
             error: { message: 'Invalid purhcase' }
@@ -22,7 +27,6 @@ export const createPurchase = async (req, res) => {
         return
     }
     
-    //@Todo: Validate customerId before create
     try {
         const orderItems = await createOrderItem(products)
 
@@ -35,7 +39,7 @@ export const createPurchase = async (req, res) => {
 
         console.log('orderItems',orderItems)
         create({
-            customerId,
+            supplierId,
             totalAmount,
             orders: orderItems
         }, (err, data) => {
@@ -63,6 +67,12 @@ export const createPurchase = async (req, res) => {
     }
 }
 
+/**
+ * It gets a purchase by id
+ * @param req - The request object.
+ * @param res - The response object that will be sent back to the client.
+ * @returns A purchase object
+ */
 export const getPurchaseById = (req, res) => {
     const id = req.params?.id
     if (!id) {
@@ -90,6 +100,11 @@ export const getPurchaseById = (req, res) => {
     })
 }
 
+/**
+ * It gets all the purchases from the database and returns them in a JSON format
+ * @param req - The request object
+ * @param res - The response object that will be sent back to the client.
+ */
 export const getAllPurchases = (req, res) => {
     getAll((err, data) => {
         if (err) {

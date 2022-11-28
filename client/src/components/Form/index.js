@@ -9,6 +9,7 @@ import { getSuppliers } from '../../api/suppliers';
 import { ALERT } from '../../redux/constants'
 import { API_STATUS_CODES } from '../../api/constants'
 import { provinces } from './constants';
+import { getCustomers } from '../../api/customers';
 
 
 const Form = ({
@@ -19,6 +20,7 @@ const Form = ({
   updateStore,
 }) => {
   const [suppliers, setSuppliers] = useState({});
+  const {customers, setCustomers} = useState({});
   const [options, setOptions] = useState(provinces);
 
   const {
@@ -40,7 +42,7 @@ const Form = ({
   }, [reset])
 
   useEffect(() => {
-    if (formKey === 'addProduct') {
+    if (formKey === 'addProduct' || formKey === 'addPurchase') {
       const fetchData = async () => {
         const response = await getSuppliers()
         console.log({ response });
@@ -50,6 +52,20 @@ const Form = ({
           name: supplier.companyName
         })))
         setSuppliers(suppliers)
+      }
+      fetchData();
+
+    }
+    if (formKey === 'addSale') {
+      const fetchData = async () => {
+        const response = await getCustomers()
+        console.log({ response });
+        const customers = response.data
+        setOptions(customers?.map(customer => ({
+          value: customer.id,
+          name: customer.firstName + " " + customer.lastName
+        })))
+        setCustomers(customers)
       }
       fetchData();
 

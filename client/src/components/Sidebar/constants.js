@@ -15,8 +15,8 @@ export const navItems = [
     href: 'products',
   },
   {
-    label: 'Purchases',
+    label: 'Invoices',
     iconName: 'faReceipt',
-    href: 'purchases',
+    href: 'invoices',
   },
 ]

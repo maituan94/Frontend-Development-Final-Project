@@ -16,6 +16,16 @@ const getProvinces = (req, res) => {
     })
 }
 
+/**
+ * It checks if the email and password are valid, and if they are, it returns the email
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns - If the email and password are not provided, or the email and password are not correct,
+ * the server will return a status code of 400 and an error message.
+ *     - If the email and password are correct, the server will return a status code of 200 and the
+ * email.
+ *     - If there is an internal server error, the server will return a status code of 500
+ */
 const login = (req, res) => {
     const { email, password } = req.body
 

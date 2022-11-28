@@ -11,6 +11,12 @@ import { create as createOrderItem} from '../models/orderItem.model.js'
 import { statusCode } from '../enum/index.js'
 import { returnSaleJson } from '../helper/index.js'
 
+/**
+ * It creates a sale by creating order items, getting the product details, calculating the total
+ * amount, and then creating the sale
+ * @param req - The request object.
+ * @param res - The response object.
+ */
 export const createSale = async (req, res) => {
     const sale = req.body
     const { products, customerId } = sale
@@ -21,8 +27,7 @@ export const createSale = async (req, res) => {
         })
         return
     }
-    
-    //@Todo: Validate customerId before create
+
     try {
         const orderItems = await createOrderItem(products)
 
@@ -63,6 +68,13 @@ export const createSale = async (req, res) => {
     }
 }
 
+/**
+ * It gets a sale by id, and if it doesn't exist, it returns a bad request error, otherwise it returns
+ * the sale
+ * @param req - The request object.
+ * @param res - The response object that will be sent back to the client.
+ * @returns A sale object
+ */
 export const getSaleById = (req, res) => {
     const id = req.params?.id
     if (!id) {
@@ -90,6 +102,11 @@ export const getSaleById = (req, res) => {
     })
 }
 
+/**
+ * It gets all sales from the database and returns them in a JSON format
+ * @param req - The request object.
+ * @param res - The response object
+ */
 export const getAllSales = (req, res) => {
     getAll((err, data) => {
         if (err) {

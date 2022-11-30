@@ -61,7 +61,7 @@ const Login = () => {
             />
           </div>
 
-          <div className='xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>
+          <div className="xl:ml-20 xl:w-4/12 lg:w-4/12 md:w-4/12 mb-12 md:mb-0">
             <form
               className='form'
               onSubmit={handleSubmit((data) => onSubmit(data))}

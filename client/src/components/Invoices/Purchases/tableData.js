@@ -1,6 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import * as Icons from '@fortawesome/free-solid-svg-icons'
+
+import { getNoProducts, numberFormat, getDateFormat } from '../../../utils/index'
 
 const RowItem = ({ children }) => (
   <th
@@ -13,39 +13,32 @@ const RowItem = ({ children }) => (
 
 const TableData = ({
   data,
-  onClickRemove
 }) => data.map((item, idx) => (
   <tr
     key={item.id}
-    className='bg-white border-b hover:bg-gray-100' >
+    className='bg-white border-b hover:bg-gray-100'
+  >
+    <RowItem>
+      {++idx}
+    </RowItem>
     <th
       scope='row'
       className='px-6 py-4 text-sm font-medium text-indigo-800'
     >
-      {item.customerId}
+      {item.id}
     </th>
     <RowItem>
-      {item.date}
+      {getDateFormat({ date: item.purchaseDate })}
     </RowItem>
     <RowItem>
-      {item.orders}
+      {getNoProducts(item.orders)}
     </RowItem>
-    <RowItem>
-      {item.totalAmount}
-    </RowItem>
-    <RowItem>
-      <div className='flex items-center'>
-        <FontAwesomeIcon size='lg' color='green' className='mr-3' icon={Icons['faEdit']} style={{ cursor: 'pointer' }} />
-        <FontAwesomeIcon
-          size='lg'
-          color='red'
-          className=''
-          icon={Icons['faRemove']}
-          style={{ cursor: 'pointer' }}
-          onClick={() => onClickRemove(item.id)}
-        />
-      </div>
-    </RowItem>
+    <th
+      scope='row'
+      className='px-6 py-4 text-sm font-bold text-gray-800'
+    >
+      {numberFormat(item.totalAmount)}
+    </th>
   </tr>
 ))
 

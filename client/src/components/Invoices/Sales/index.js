@@ -11,17 +11,16 @@ import PageTop from '../../PageTop';
 import TableData from './tableData';
 
 const HEADERS = [
-  'Supplier ID',
+  'No',
+  'Customer ID',
   'Date',
-  'Orders',
-  'Total items',
-  'Price per unit',
-  'Price total'
+  'Total products',
+  'Total price',
 ]
 
 const Sales = () => {
   const [data, setData] = useState([]);
-  const { Sales } = useSelector(state => state.records)
+  const { sales } = useSelector(state => state.records)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -44,7 +43,7 @@ const Sales = () => {
 
   const handleOnDelete = (id) => {
     deleteSale(id)
-    const newSales = Sales.filter(Sale => Sale.id !== id)
+    const newSales = sales.filter(Sale => Sale.id !== id)
     dispatch(initializeSales(newSales))
     setTimeout(() => {
       dispatch(
@@ -57,7 +56,7 @@ const Sales = () => {
     }, 2000)
   }
 
-  if (!Sales?.length)
+  if (!sales?.length)
     return (
       <PageTop
         heading='No Sales'
@@ -66,7 +65,7 @@ const Sales = () => {
         btnLabel='Add Sale'
       />)
 
-  const tableData = <TableData data={Sales} onClickRemove={handleOnDelete} />
+  const tableData = <TableData data={sales} onClickRemove={handleOnDelete} />
 
   return (
     <div>

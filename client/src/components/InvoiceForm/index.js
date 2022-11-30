@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 
-import { renderDropdown, renderRadio, renderSimpleInput } from '../../utils'
+import { renderDropdown, RenderDynamicDropdown, renderRadio, renderSimpleInput } from '../../utils'
 import { closeModalStack, createAlert } from '../../redux/alert/alertSlice'
 import { getSuppliers } from '../../api/suppliers';
 
 import { ALERT } from '../../redux/constants'
 import { API_STATUS_CODES } from '../../api/constants'
-import { provinces } from './constants';
 import { getCustomers } from '../../api/customers';
+import { getProducts } from '../../api/products';
 
 
-const Form = ({
+const InvoiceForm = ({
   elements,
   createAPICallMethod,
   alertSuccessMessage,
@@ -21,7 +21,8 @@ const Form = ({
 }) => {
   const [suppliers, setSuppliers] = useState({});
   const {customers, setCustomers} = useState({});
-  const [options, setOptions] = useState(provinces);
+  const {options, setOptions} = useState({});
+  const [products, setProducts] = useState({});
 
   const {
     handleSubmit,
@@ -42,7 +43,8 @@ const Form = ({
   }, [reset])
 
   useEffect(() => {
-    if (formKey === 'addProduct' || formKey === 'addPurchase') {
+    if (formKey === 'addPurchase'){
+      // Get suppliers
       const fetchData = async () => {
         const response = await getSuppliers()
         console.log({ response });
@@ -56,6 +58,7 @@ const Form = ({
       fetchData();
 
     }
+
     if (formKey === 'addSale') {
       const fetchData = async () => {
         const response = await getCustomers()
@@ -70,22 +73,19 @@ const Form = ({
       fetchData();
 
     }
-    if (formKey === 'addPurchase') {
-      const fetchData = async () => {
-        const response = await getCustomers()
-        console.log({ response });
-        const customers = response.data
-        setOptions(customers?.map(customer => ({
-          value: customer.id,
-          name: customer.firstName + " " + customer.lastName
-        })))
-        setCustomers(customers)
-      }
-      fetchData();
 
-    } else {
-      setOptions(provinces)
+    const fetchData = async () => {
+      const response = await getProducts()
+      console.log({ response });
+      const products = response.data
+      setOptions(products?.map(product => ({
+        value: product.id,
+        name: product.productName
+      })))
+      setProducts(products)
     }
+    fetchData();
+
   }, [formKey])
 
 
@@ -118,17 +118,21 @@ const Form = ({
       onSubmit={handleSubmit(data => onSubmit(data))}
     >
       {elements?.map((ele, index) => {
-        if (ele.type === "radio") {
-          return renderRadio({
-            data: ele,
+        if (ele.type === "dropdown") {
+          return renderDropdown({
+            id: ele.name,
+            name: ele.name,
+            label: ele.placeholder,
+            options,
             control,
             errors,
             index,
-            register
+            register,
           })
         }
-        if (ele.type === "dropdown") {
-          return renderDropdown({
+
+        if (ele.type === "dynamic") {
+          return RenderDynamicDropdown({
             id: ele.name,
             name: ele.name,
             label: ele.placeholder,
@@ -161,7 +165,8 @@ const Form = ({
         </button>
       </div>
     </form>
+
   );
 }
 
-export default Form;
+export default InvoiceForm;

@@ -5,13 +5,8 @@ export const createSaleElements = [
     placeholder: 'Select customer'
   },
   {
-    name: 'purchaseDate',
-    type: 'date',
-    placeholder: 'Select date'
-  },
-  {
-    name: 'orders',
-    type: 'text',
+    name: 'products',
+    type: 'dynamic',
     placeholder: 'Select orders'
   }
 ]

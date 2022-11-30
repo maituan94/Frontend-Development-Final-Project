@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { useSelector } from 'react-redux'
 import Form from '../Form/index'
+import InvoiceForm from '../InvoiceForm/index'
 
 import { createProductElements } from '../Products/constants';
 import { createSupplierElements } from '../Suppliers/constants'
@@ -47,6 +48,9 @@ const ModalStack = () => {
       formKey: 'addSupplier',
       updateStore: updateSuppliers,
     },
+  }[modal.type]
+
+  const invoicesFormProps = {
     'purchases': {
       elements: createPurchaseElements,
       createAPICallMethod: createPurchase,
@@ -62,6 +66,7 @@ const ModalStack = () => {
       updateStore: updateSales,
     },
   }[modal.type]
+
 
   return (
     ReactDOM.createPortal(
@@ -87,7 +92,11 @@ const ModalStack = () => {
                 aria-label="Close"></button>
             </div>
             <div className="modal-body relative p-4">
-              <Form {...formProps} />
+              {
+                modal.type === 'sales' || modal.type === 'purchases'
+                ? <InvoiceForm {...invoicesFormProps} />
+                : <Form {...formProps} />
+              }
             </div>
           </div>
         </div>

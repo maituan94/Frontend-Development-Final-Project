@@ -52,18 +52,18 @@ export const renderRadio = ({ data, control, errors, index, register }) =>
     render={({ field }) => {
       return (
         <div className='bg-white mb-6'>
-          <label class="block mb-2 text-sm font-medium text-gray-900">Gender:</label>
-          <div class="flex items-center mb-4 ml-10">
-            <input id="default-radio-1" type="radio" name={field.name} {...register(field.name)} value="male" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
-            <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900">Male</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900">Gender:</label>
+          <div className="flex items-center mb-4 ml-10">
+            <input id="default-radio-1" type="radio" name={field.name} {...register(field.name)} value="male" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
+            <label for="default-radio-1" className="ml-2 text-sm font-medium text-gray-900">Male</label>
           </div>
-          <div class="flex items-center mb-4 ml-10">
-            <input id="default-radio-1" type="radio" name={field.name} {...register(field.name)} value="female" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
-            <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900">Female</label>
+          <div className="flex items-center mb-4 ml-10">
+            <input id="default-radio-1" type="radio" name={field.name} {...register(field.name)} value="female" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
+            <label for="default-radio-1" className="ml-2 text-sm font-medium text-gray-900">Female</label>
           </div>
-          <div class="flex items-center mb-4 ml-10">
-            <input id="default-radio-1" type="radio" name={field.name} {...register(field.name)} value="other" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
-            <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900">Other</label>
+          <div className="flex items-center mb-4 ml-10">
+            <input id="default-radio-1" type="radio" name={field.name} {...register(field.name)} value="other" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
+            <label for="default-radio-1" className="ml-2 text-sm font-medium text-gray-900">Other</label>
           </div>
           <small className='text-red-500 d-flex flex-column'>{errors[data.name]?.message || ''}</small>
         </div>
@@ -88,13 +88,13 @@ export const renderDropdown = ({
       rules={rules}
       render={({ field }) => (
         <div className='bg-white mb-6'>
-          <label for={id} class="block mb-2 text-sm font-medium text-gray-900">
+          <label for={id} className="block mb-2 text-sm font-medium text-gray-900">
             {label}:
           </label>
           <select
             id={id}
             {...register(name)}
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
             {
               options.map((option, idx) =>
@@ -123,3 +123,26 @@ export const renderDatePicker = (data, control, index) =>
       </div>
     )}
   />
+
+export const numberFormat = (value) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'CAD'
+  }).format(value);
+
+export const getNoProducts = (array) => array.reduce((acc, curr) => {
+  return acc + curr.quantity
+}, 0)
+
+export const getDateFormat = ({ date, toShow = false }) => {
+  const newDate = date ? new Date(date) : new Date();
+  const month = newDate.getMonth() + 1;
+  const day = newDate.getDate() + 1;
+  const year = newDate.getFullYear();
+
+  if (toShow) {
+    return `${year}-${month}-${day}`;
+  }
+
+  return `${month}-${day}-${year}`;
+} 

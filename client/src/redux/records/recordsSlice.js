@@ -31,10 +31,10 @@ const recordsSlice = createSlice({
       state.products.push(action.payload)
     },
     initializePurchases: (state, action) => {
-      state.pruchases = action.payload
+      state.purchases = action.payload
     },
     updatePurchases: (state, action) => {
-      state.purhcases.push(action.payload)
+      state.purchases.push(action.payload)
     },
     initializeSales: (state, action) => {
       state.sales = action.payload

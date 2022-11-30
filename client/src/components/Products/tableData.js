@@ -46,8 +46,8 @@ const TableData = ({
     <RowItem>
       {item.description}
     </RowItem>
-    <RowItem>
-      <div className='flex items-center'>
+    <RowItem className='flex items-center'>
+      <div>
         <FontAwesomeIcon size='lg' color='green' className='mr-3' icon={Icons['faEdit']} style={{ cursor: 'pointer' }} />
         <FontAwesomeIcon
           size='lg'

@@ -11,12 +11,11 @@ import PageTop from '../../PageTop';
 import TableData from './tableData';
 
 const HEADERS = [
-  'Customer ID',
+  'No',
+  'Supplier ID',
   'Date',
-  'Orders',
-  'Total items',
-  'Price per unit',
-  'Price total'
+  'Total products',
+  'Total price',
 ]
 
 const Purchases = () => {

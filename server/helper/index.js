@@ -127,7 +127,7 @@ export const returnSaleJson = (data) => {
     return {
         id: data._id,
         supplierId: data.supplierId,
-        purchaseDate: data.purchaseDate,
+        saleDate: data.saleDate,
         totalAmount: data.totalAmount,
         orders: data.orders
     }

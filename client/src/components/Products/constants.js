@@ -18,21 +18,33 @@ export const createProductElements = [
   },
   {
     name: 'purchasePrice',
-    type: 'text',
+    rules: {
+      required: { value: true, message: 'Purchase price cannot be empty' },
+    },
+    type: 'number',
     placeholder: 'Purchase Price'
   },
   {
     name: 'salePrice',
-    type: 'text',
+    rules: {
+      required: { value: true, message: 'Sale price cannot be empty' },
+    },
+    type: 'number',
     placeholder: 'Sales Price'
   },
   {
     name: 'imageUrl',
+    rules: {
+      required: { value: true, message: 'Image URL required' },
+    },
     type: 'text',
     placeholder: 'https://via.placeholder.com/150'
   },
   {
     name: 'description',
+    rules: {
+      required: { value: true, message: 'Product needs a description' },
+    },
     type: 'text',
     placeholder: 'Product Description'
   },

@@ -21,7 +21,7 @@ export const createProductElements = [
     rules: {
       required: { value: true, message: 'Purchase price cannot be empty' },
     },
-    type: 'text',
+    type: 'number',
     placeholder: 'Purchase Price'
   },
   {
@@ -29,7 +29,7 @@ export const createProductElements = [
     rules: {
       required: { value: true, message: 'Sale price cannot be empty' },
     },
-    type: 'text',
+    type: 'number',
     placeholder: 'Sales Price'
   },
   {

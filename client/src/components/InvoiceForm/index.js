@@ -19,10 +19,10 @@ const InvoiceForm = ({
   formKey,
   updateStore,
 }) => {
-  const [suppliers, setSuppliers] = useState({});
-  const {customers, setCustomers} = useState({});
-  const {options, setOptions} = useState({});
-  const [products, setProducts] = useState({});
+  const [suppliers, setSuppliers] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [options, setOptions] = useState([]);
 
   const {
     handleSubmit,
@@ -43,15 +43,14 @@ const InvoiceForm = ({
   }, [reset])
 
   useEffect(() => {
-    if (formKey === 'addPurchase'){
+    if (formKey === 'addPurchase') {
       // Get suppliers
       const fetchData = async () => {
         const response = await getSuppliers()
-        console.log({ response });
         const suppliers = response.data
-        setOptions(suppliers?.map(supplier => ({
-          value: supplier.id,
-          name: supplier.companyName
+        setOptions(suppliers?.map(({ id, companyName }) => ({
+          value: id,
+          name: companyName
         })))
         setSuppliers(suppliers)
       }
@@ -62,11 +61,10 @@ const InvoiceForm = ({
     if (formKey === 'addSale') {
       const fetchData = async () => {
         const response = await getCustomers()
-        console.log({ response });
         const customers = response.data
-        setOptions(customers?.map(customer => ({
-          value: customer.id,
-          name: customer.firstName + " " + customer.lastName
+        setOptions(customers?.map(({ id, firstName, lastName }) => ({
+          value: id,
+          name: `${firstName} ${lastName}`
         })))
         setCustomers(customers)
       }
@@ -76,13 +74,11 @@ const InvoiceForm = ({
 
     const fetchData = async () => {
       const response = await getProducts()
-      console.log({ response });
       const products = response.data
-      setOptions(products?.map(product => ({
-        value: product.id,
-        name: product.productName
+      setProducts(products?.map(({ id, productName }) => ({
+        value: id,
+        name: productName
       })))
-      setProducts(products)
     }
     fetchData();
 
@@ -136,13 +132,14 @@ const InvoiceForm = ({
             id: ele.name,
             name: ele.name,
             label: ele.placeholder,
-            options,
+            options: products,
             control,
             errors,
             index,
             register,
           })
         }
+
         return renderSimpleInput(ele, control, errors, index)
       })}
 

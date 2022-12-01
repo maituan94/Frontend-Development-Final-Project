@@ -1,5 +1,7 @@
 import { Controller } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import * as Icons from '@fortawesome/free-solid-svg-icons'
 
 export const renderSimpleInput = (data, control, errors, index) => (
   <Controller
@@ -129,6 +131,109 @@ export const renderDatePicker = (data, control, index) => (
     render={({ field }) => <div className="bg-white mb-6"></div>}
   />
 );
+
+// options here are products
+export const RenderDynamicDropdown = ({
+  id,
+  name,
+  label,
+  options,
+  rules,
+  control,
+  errors,
+  index,
+  register,
+}) => {
+  const [itemList, setItemList] = useState([
+    { myItems: '' }, // Might have to change this here and it handleItemAdd & handleItemRemove
+  ]);
+
+  if (!options.length) return null
+
+  const handleItemAdd = () => {
+    setItemList([...itemList, { myItems: '' }])
+  }
+
+  const handleItemRemove = (item) => {
+    const myList = [...itemList]
+    myList.splice(index, 1)
+    setItemList(myList)
+  }
+
+  console.log({ options, itemList, leng: itemList.length });
+
+  return (
+    <Controller
+      key={`${name}-${index}`}
+      name={name}
+      control={control}
+      rules={rules}
+      render={({ field }) => (
+        <div className="bg-white mb-6">
+          {itemList.map((item, index) => (
+            <>
+              <div className="flex items-center gap-4 ">
+                <div className="flex-1 w-64">
+                  {renderDropdown({
+                    id: `${id}-${index}`,
+                    name: `${name}-${index}`,
+                    label,
+                    options,
+                    rules,
+                    control,
+                    errors,
+                    index,
+                    register
+                  })}
+                </div>
+
+                <div className='bg-white mb-6'>
+                  <label for={id} className="block mb-2 text-sm font-medium text-gray-900">
+                    Quantity:
+                  </label>
+                  <input
+                    id="quantity"
+                    className="w-20 rounded-lg"
+                    type="number"
+                    name="quantity"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+
+                {/* <input type="number" class="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="custom-input-number" value="0"></input> */}
+
+                {itemList.length > 1 && (
+                  <FontAwesomeIcon
+                    id="removeListItem"
+                    size='lg'
+                    color='red'
+                    className='rounded-full p-1 w-5 h-5 border-2 border-solid border-red-500 cursor-pointer'
+                    icon={Icons['faRemove']}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleItemRemove(index)}
+                  />
+                )}
+              </div>
+
+              {/* Button to add item */}
+              {itemList.length - 1 === index && (
+                <button
+                  type="button"
+                  id="addListItem"
+                  onClick={handleItemAdd}
+                  class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"
+                >
+                  Add item
+                </button>
+              )}
+            </>
+          ))}
+        </div>
+      )}
+    />
+  );
+};
 
 export const numberFormat = (value) =>
   new Intl.NumberFormat('en-IN', {

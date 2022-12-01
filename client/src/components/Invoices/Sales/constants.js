@@ -7,6 +7,6 @@ export const createSaleElements = [
   {
     name: 'products',
     type: 'dynamic',
-    placeholder: 'Select orders'
+    placeholder: 'Select product'
   }
 ]

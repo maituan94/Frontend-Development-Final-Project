@@ -11,6 +11,13 @@ import { API_STATUS_CODES } from '../../api/constants'
 import { getCustomers } from '../../api/customers';
 import { getProducts } from '../../api/products';
 
+const optionsInitialState = [
+  {
+    value: '',
+    name: ''
+  }
+]
+
 
 const InvoiceForm = ({
   elements,
@@ -19,10 +26,9 @@ const InvoiceForm = ({
   formKey,
   updateStore,
 }) => {
-  const [suppliers, setSuppliers] = useState([]);
-  const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
-  const [options, setOptions] = useState([]);
+  const [productsToSubmit, setProductsToSubmit] = useState([]);
+  const [options, setOptions] = useState(optionsInitialState);
 
   const {
     handleSubmit,
@@ -47,12 +53,14 @@ const InvoiceForm = ({
       // Get suppliers
       const fetchData = async () => {
         const response = await getSuppliers()
-        const suppliers = response.data
-        setOptions(suppliers?.map(({ id, companyName }) => ({
-          value: id,
-          name: companyName
-        })))
-        setSuppliers(suppliers)
+        const suppliersRes = response.data
+        setOptions([
+          ...[optionsInitialState],
+          ...suppliersRes?.map(({ id, companyName }) => ({
+            value: id,
+            name: companyName
+          }))
+        ])
       }
       fetchData();
 
@@ -61,12 +69,14 @@ const InvoiceForm = ({
     if (formKey === 'addSale') {
       const fetchData = async () => {
         const response = await getCustomers()
-        const customers = response.data
-        setOptions(customers?.map(({ id, firstName, lastName }) => ({
-          value: id,
-          name: `${firstName} ${lastName}`
-        })))
-        setCustomers(customers)
+        const customersRes = response.data
+        setOptions([
+          ...[optionsInitialState],
+          ...customersRes?.map(({ id, firstName, lastName }) => ({
+            value: id,
+            name: `${firstName} ${lastName}`
+          }))
+        ])
       }
       fetchData();
 
@@ -84,9 +94,25 @@ const InvoiceForm = ({
 
   }, [formKey])
 
+  const handleOnChangeProducts = (products) => {
+    setProductsToSubmit(products)
+  }
 
   const onSubmit = async (data) => {
-    const { data: responseData } = await createAPICallMethod(data)
+    const { customerId, supplierId } = data
+
+    const body = {
+      'addSale': {
+        customerId,
+        products: productsToSubmit
+      },
+      'addPurchase': {
+        supplierId,
+        products: productsToSubmit
+      },
+    }[formKey]
+
+    const { data: responseData } = await createAPICallMethod(body)
     if (responseData.statusCode === API_STATUS_CODES.BAD_REQUEST) {
       const keyError = Object.keys(responseData.error.keyPattern)[0]
       setError(keyError, { message: responseData.error.message })
@@ -137,6 +163,7 @@ const InvoiceForm = ({
             errors,
             index,
             register,
+            onChangeProducts: handleOnChangeProducts,
           })
         }
 

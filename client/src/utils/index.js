@@ -111,6 +111,7 @@ export const renderDropdown = ({
             id={id}
             {...register(name)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            required
           >
             {options.map((option, idx) => (
               <option value={option.value}>{option.name}</option>
@@ -143,24 +144,51 @@ export const RenderDynamicDropdown = ({
   errors,
   index,
   register,
+  onChangeProducts,
 }) => {
-  const [itemList, setItemList] = useState([
-    { myItems: '' }, // Might have to change this here and it handleItemAdd & handleItemRemove
-  ]);
+  const [itemList, setItemList] = useState([]);
+  const [productIdx, setProductIdx] = useState(0);
+
+  useEffect(() => {
+    if (options && options.length) {
+      setItemList([
+        ...itemList,
+        {
+          productId: options[productIdx].value,
+          quantity: 0
+        }
+      ])
+    }
+  }, [options])
+
+  useEffect(() => {
+    onChangeProducts(itemList)
+  }, [itemList])
 
   if (!options.length) return null
 
   const handleItemAdd = () => {
-    setItemList([...itemList, { myItems: '' }])
+    setProductIdx(productIdx + 1)
+    setItemList([...itemList, {
+      productId: options[productIdx].value,
+      quantity: 0
+    }])
+
   }
 
   const handleItemRemove = (item) => {
     const myList = [...itemList]
     myList.splice(index, 1)
+    setProductIdx(productIdx - 1)
     setItemList(myList)
   }
 
-  console.log({ options, itemList, leng: itemList.length });
+  const handleQuantityOnChange = (event) => {
+    const { target } = event
+    let newArr = [...itemList]
+    newArr[productIdx].quantity = Number(target.value);
+    setItemList(newArr)
+  }
 
   return (
     <Controller
@@ -197,6 +225,8 @@ export const RenderDynamicDropdown = ({
                     type="number"
                     name="quantity"
                     placeholder="0"
+                    onChange={handleQuantityOnChange}
+                    min="1"
                     required
                   />
                 </div>
@@ -219,7 +249,7 @@ export const RenderDynamicDropdown = ({
               {/* Button to add item */}
               {itemList.length - 1 === index && (
                 <button
-                  type="button"
+                  type="submit"
                   id="addListItem"
                   onClick={handleItemAdd}
                   class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2"

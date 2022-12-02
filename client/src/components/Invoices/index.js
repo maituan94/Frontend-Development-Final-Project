@@ -30,10 +30,12 @@ const ListItem = ({
         data-bs-target={`#${id}`}
         role="tab"
         aria-controls={`${id}`}
-        aria-selected={ariaSelected}>{label}</a>
+        aria-selected={ariaSelected}
+      >
+        {label}
+      </a>
     </li>
   )
-
 }
 
 const Invoices = () => {

@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import dbConfig from './dbconfig.js'
+import { db, validateFirestoreConnection } from './firebase/index.js'
 
 import CustomerRouter from './routes/customer.route.js'
 import GeneralRouter from './routes/general.route.js'
@@ -29,6 +30,8 @@ const CONNECTION_URL = `mongodb+srv://${dbConfig.user}:${dbConfig.password}@${db
 /* This is setting the port to the value of the environment variable PORT or 4000 if the environment
 variable PORT is not set. */
 const PORT = process.env.PORT || 4000;
+
+validateFirestoreConnection()
 
 /* This is connecting to the database and then starting the server. */
 mongoose.connect(CONNECTION_URL, { })
